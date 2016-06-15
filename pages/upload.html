@@ -1,0 +1,15 @@
+<form id="uploadForm" action="https://api.inpher.io/ultra/upload" method="post" enctype="multipart/form-data">
+  <input type="text" name="name"/>
+  <p>
+    Select a file : <input type="file" name="content" size="45" />
+  </p>
+  <input type="submit" value="Upload It" />
+</form>
+<script>
+  $(function() {
+     $('#uploadForm').submit(function(event){
+      // avoid to execute the actual submit of the form.
+      event.preventDefault();
+    });
+  });
+</script>
