@@ -18,5 +18,7 @@ app.get('/login.html', function(req,res) {
   return res.render('login.twig',{});
 });
 
-app.listen(3000);
+app.listen(3000, function() {
+    console.log("Listening on http://localhost:3000/")
+});
 
