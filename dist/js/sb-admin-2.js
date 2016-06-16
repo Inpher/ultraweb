@@ -2,7 +2,7 @@ $(function() {
    $('#loginForm').submit(function(event){
     //login
     inpherapi_login($('#username').val(),$('#password').val(), function (data) {
-        console.log(data)
+        window.location ="file-list.html";
     });
 
     event.preventDefault(); // avoid to execute the actual submit of the form.
@@ -13,7 +13,6 @@ $(function() {
    $('#registerForm').submit(function(event){
     //login
     inpherapi_anon_post('/register',{username: $('#username').val(), password: $('#password').val()}, function (data) {
-        console.log(data)
     });
 
     event.preventDefault(); // avoid to execute the actual submit of the form.
