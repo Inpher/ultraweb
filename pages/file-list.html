@@ -1,53 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>Inpher FS View</title>
-
-    <!-- Bootstrap Core CSS -->
-    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- MetisMenu CSS -->
-    <link href="../bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
-
-    <!-- DataTables CSS -->
-    <link href="../bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.css" rel="stylesheet">
-
-    <!-- DataTables Responsive CSS -->
-    <link href="../bower_components/datatables-responsive/css/dataTables.responsive.css" rel="stylesheet">
-
-    <!-- Custom CSS -->
-    <link href="../dist/css/sb-admin-2.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="../bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <!-- jQuery -->
-    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="../bower_components/metisMenu/dist/metisMenu.min.js"></script>
-    <!-- Custom Theme JavaScript -->
-    <script src="../dist/js/sb-admin-2.js"></script>
-    <!-- inpher -->
-    <link href="../css/inpher.css" rel="stylesheet" type="text/css">
-    <script src="../js/inpher.js"></script>
-
-</head>
+<div class="row">
+    <div class="col-lg-12">
+		<h1 class="panel-heading">
+			Filesystem View
+		</h1>
+	<!-- /.panel-heading -->
+		<div class="panel-body">
+			<div class="dataTable_wrapper">
+				<table id="files" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+				<thead>
+						<tr>
+							<th>Name</th>
+							<th>Kind</th>
+							<th>Size</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
 
 <body>
 <div class="panel panel-default">
@@ -70,22 +41,33 @@
     </div>
   </div>
 </div>
+</body>
+</html>
+=======
+<!-- DataTables JavaScript -->
+<script src="../bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+<script src="../bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+<script src="../bower_components/datatables-responsive/js/dataTables.responsive.js"></script>
 
 <script>
-$(document).ready(function () {
-  // Load the table content
-  inpherapi_list('/' + sessionStorage.getItem('user'), function(data, status) {
-    alert("Naaaaaah " + status)
-    $("#files").DataTable( {
-      data: data
-    } )
-  })
-})
+	$(document).ready(function () {
+	  // Load the table content
+	  inpherapi_list('/' + sessionStorage.getItem("username") , function(data, status) {
+		if (status !== "success") {
+			alert("error " + status);
+		}
+		console.log(data);
+		$("#files").DataTable( {
+			data: data.list.map(function(a) {return [a, "Directory", 0]})
+		});
+	  });
+	});
 
-function inpherapi_list(path, callback) {
-  inpherapi_auth_get("/listDir", "dir=" + path, callback)
-}
-
+	function inpherapi_list(path, callback) {
+		inpherapi_auth_get("/listDir", "dir=" + path, callback)
+	}
+</script>
+<script>
 // ------------------------------------------------
 // Upload shit below
 function sendFileToServer(formData,status) {
@@ -227,6 +209,3 @@ $(document).on('drop', function (e)
 // Upload shit above
 // ------------------------------------------------
 </script>
-</body>
-
-</html>

@@ -33,32 +33,45 @@
 </head>
 
 <body>
+	<!-- Navigation -->
+	<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand"><img style="max-width:150px;" src="../css/logo.png"></a> 
+		</div>
+		<!-- /.navbar-header -->
+	</nav>
 	<div class="container">
 
 		<div class="row" style="margin-top:20px">
 			<div class="col-xs-12 col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
 				<form role="form" id="loginForm">
 					<fieldset>
-						<h2>Please Login</h2>
+						<h2>Please Login or Register</h2>
 						<hr class="colorgraph">
 						<div class="form-group">
-							<input type="text" name="username" id="username" class="form-control input-lg" placeholder="Username">
+							<input type="text" name="username" id="username" required class="form-control input-lg" placeholder="Username">
 						</div>
 						<div class="form-group">
-							<input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password">
+							<input type="password" name="password" id="password" required class="form-control input-lg" placeholder="Password">
 						</div>
-						<span class="button-checkbox">
+						<!-- <span class="button-checkbox">
 							<button type="button" class="btn" data-color="info">Remember Me</button>
-							<!-- <input type="checkbox" name="remember_me" id="remember_me" checked="checked" class="hidden"> -->
+							<input type="checkbox" name="remember_me" id="remember_me" checked="checked" class="hidden">
 							<a href="" class="btn btn-link pull-right">Forgot Password?</a>
-						</span>
+						</span> -->
 						<hr class="colorgraph">
 						<div class="row">
 							<div class="col-xs-6 col-sm-6 col-md-6">
-								<input type="submit" name="action" class="btn btn-lg btn-success btn-block" value="Login">
+								<a id="login" class="btn btn-lg btn-success btn-block"> Login </a>
 							</div>
 							<div class="col-xs-6 col-sm-6 col-md-6">
-								<a href="register.html"  class="btn btn-lg btn-success btn-block" > Register</a>
+								<a id="register" class="btn btn-lg btn-success btn-block" > Register</a>
 							</div>
 						</div>
 					</fieldset>
@@ -80,9 +93,9 @@
 	<!-- Custom Theme JavaScript -->
 	<script src="../dist/js/sb-admin-2.js"></script>
 
-    <!-- inpher -->
-    <link href="../css/inpher.css" rel="stylesheet" type="text/css">
-    <script src="../js/inpher.js"></script>
+	<!-- inpher -->
+	<link href="../css/inpher.css" rel="stylesheet" type="text/css">
+	<script src="../js/inpher.js"></script>
 
 </body>
 
