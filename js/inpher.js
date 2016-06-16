@@ -1,13 +1,13 @@
 var INPHER_REST_URL="https://api.inpher.io/ultraRest";
 
-/** Simple function to print an error message in the console */ 
+/** Simple function to print an error message in the console */
 function print_error(error) {
     console.log("An error occured:",error);
 }
-/** 
+/**
  * Simple function to print its argument in the console (may be used as
- * a debug (or default) callback 
- */ 
+ * a debug (or default) callback
+ */
 function dump(data) {
     console.log("Result:",data);
 }
@@ -16,13 +16,13 @@ function dump(data) {
  * anonymous ajax call:
  * - INPHER_REST_URL is prepended to path
  * - callback is called when done
- * - options are passed to JQuery ajax call 
+ * - options are passed to JQuery ajax call
  */
 function inpherapi_anon_ajax(path, callback, options) {
     var opt = (options===undefined)?{}:options;
     opt.url = INPHER_REST_URL + path;
     console.log("Sending Ajax Request: ",opt);
-    $.ajax(opt).done(callback).fail(print_error);    
+    $.ajax(opt).done(callback).fail(print_error);
 }
 
 /**
@@ -35,11 +35,11 @@ function inpherapi_auth_ajax(path, callback, options) {
     if (!options.headers.auth_token) return print_error('Not Logged In!');
     opt.url = INPHER_REST_URL + path;
     console.log("Sending Ajax Request: ",opt);
-    $.ajax(opt).done(callback).fail(print_error);    
+    $.ajax(opt).done(callback).fail(print_error);
 }
 
-/** 
- * anonymous ajax get. 
+/**
+ * anonymous ajax get.
  * data is appended url-encoded to the query string
  */
 function inpherapi_anon_get(path, data, callback, options) {
@@ -49,8 +49,8 @@ function inpherapi_anon_get(path, data, callback, options) {
     inpherapi_anon_ajax(path, callback, opt);
 }
 
-/** 
- * anonymous ajax post. 
+/**
+ * anonymous ajax post.
  * data is sent url-encoded as the body
  */
 function inpherapi_anon_post(path, data, callback, options) {
@@ -60,8 +60,8 @@ function inpherapi_anon_post(path, data, callback, options) {
     inpherapi_anon_ajax(path, callback, opt);
 }
 
-/** 
- * anonymous ajax post. 
+/**
+ * anonymous ajax post.
  * data serialized and sent as application/json as the body
  */
 function inpherapi_anon_post_json(path, data, callback, options) {
@@ -86,6 +86,13 @@ function inpherapi_auth_post(path, data, callback, options) {
     inpherapi_auth_ajax(path, callback, opt);
 }
 
+function inpherapi_auth_delete(path, data, callback, options) {
+    var opt = (options===undefined)?{}:options;
+    opt.data=data;
+    opt.method='DELETE';
+    inpherapi_auth_ajax(path, callback, opt);
+}
+
 function inpherapi_auth_post_json(path, data, callback, options) {
     var opt = (options===undefined)?{}:options;
     opt.method='POST';
@@ -94,7 +101,7 @@ function inpherapi_auth_post_json(path, data, callback, options) {
     inpherapi_auth_ajax(path, callback, opt);
 }
 
-/** 
+/**
  * logs-in:
  *  Calls the login function, add username and auth_token to the
  *  sessionStorage, and calls the callback upon success
@@ -110,7 +117,7 @@ function inpherapi_login(username, password, callback) {
     }
 }
 
-/** 
+/**
  * logs-out:
  *  Calls the logout function, remove username and auth_token from the
  *  sessionStorage, and calls the callback upon success
@@ -124,7 +131,7 @@ function inpherapi_logout(callback) {
     }
 }
 
-/* 
+/*
 this will never work with the file:// protocol, so it remains commented.
 for now, we'll have to put all the divs in the same file
 
@@ -137,7 +144,7 @@ function loadDiv(name) {
     if (ui.loadedDivName==name) return;
     if (ui.loadedDivs[name]===undefined)
         return $.get("partial/"+name+".html",{},next1);
-    else 
+    else
 	return next2();
     function next1(data) {
 	var newdiv=$(data);

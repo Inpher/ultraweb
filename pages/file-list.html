@@ -6,16 +6,20 @@
 	<!-- /.panel-heading -->
 		<div class="panel-body">
       <div class="container-fluid">
+        <div class="row-fluid">
         <ol class="breadcrumb" id="pathNav">
         </ol>
       </div>
-      <div id="mkdir" class="input-group">
-          <input id="mkdirname" type="text" class="form-control" placeholder="Create directory...">
-          <span class="input-group-btn">
-          <button id="mkdirbtn" class="btn btn-success" type="button">
-              <i class="fa fa-plus"></i>
-          </button>
-          </span>
+      <div class="row-fluid">
+        <div id="mkdir" class="input-group">
+            <input id="mkdirname" type="text" class="form-control" placeholder="Create directory...">
+            <span class="input-group-btn">
+            <button id="mkdirbtn" class="btn btn-success" type="button">
+                <i class="fa fa-plus"></i>
+            </button>
+            </span>
+        </div>
+      </div>
       </div>
       <br/>
 			<div class="dataTable_wrapper">
@@ -25,6 +29,7 @@
 							<th>Name</th>
 							<th>Kind</th>
 							<th>Size</th>
+              <th>Del</th>
 						</tr>
 					</thead>
 				</table>
@@ -74,6 +79,11 @@ $(document).ready(function () {
     var t;
     for(t = $(event.target); !t.is("tr"); t = t.parent()) {
       if (t.is("table")) return
+      if (t.hasClass('delbtn')){
+        console.log("button")
+        delItem(t.attr('data-path'))
+        return
+      }
     }
     if (!t.parent().is("tbody")) {
       return
@@ -109,17 +119,23 @@ function update_table(path, callback) {
 }
 
 function inpherapi_list_res_to_row(a) {
-  return [a.path, a.type, a.size]
+  var delbtn = $('<button type="button" class="btn btn-danger btn-circle delbtn"><i class="fa fa-times-circle"></i></button>');
+  delbtn.attr('data-path', a.path)
+  return [a.path, a.type, a.size, delbtn.wrapAll('<div>').parent().html()]
 }
 
 function inpherapi_list(path, callback) {
   inpherapi_auth_get("/listDir", "dir=" + path, callback)
 }
 
-// ------------------------------------------------
-// Mkdir
 
-
+function delItem(path) {
+  console.log("delItem")
+  inpherapi_auth_delete('/delete', {path: path, recursive: true},
+  function (e) {
+      update_table(currentPath)
+  })
+}
 
 // ------------------------------------------------
 // Upload shit below
