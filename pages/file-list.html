@@ -27,8 +27,8 @@
 				<thead>
 						<tr>
 							<th>Name</th>
-							<th>Kind</th>
 							<th>Size</th>
+              <th>Groups Access</th>
               <th>Del</th>
 						</tr>
 					</thead>
@@ -89,7 +89,7 @@ $(document).ready(function () {
       return
     }
     if (t.children().length == 1) return
-    update_currentPath(t.children().first().text())
+    update_currentPath(t.find("div[data-path]").attr("data-path"))
   })
 })
 
@@ -98,7 +98,6 @@ function init_table(path) {
     if (status !== "success") {
        alert("error " + status)
     }
-    console.log(data)
     $("#files").DataTable( {
       data: data.list.map(inpherapi_list_res_to_row)
     } )
@@ -121,7 +120,20 @@ function update_table(path, callback) {
 function inpherapi_list_res_to_row(a) {
   var delbtn = $('<button type="button" class="btn btn-danger btn-circle delbtn"><i class="fa fa-times-circle"></i></button>');
   delbtn.attr('data-path', a.path)
-  return [a.path, a.type, a.size, delbtn.wrapAll('<div>').parent().html()]
+  return [fsElementIconAndNameHtml(a.type, a.path), a.size, a.groups,delbtn.wrapAll('<div>').parent().html()]
+}
+
+function fsElementIconAndNameHtml(elementType, path) {
+  var name = path.substring(path.lastIndexOf("/") + 1, path.length)
+  return "<div data-path='" + path + "'>" + fsElementTypeHtmlIcon(elementType) + "&emsp;" + name + "</div>"
+}
+
+function fsElementTypeHtmlIcon(elementType) {
+  if (elementType === "DOCUMENT") {
+    return "<i class='fa fa-file-text'></i>"
+  } else {
+    return "<i class='fa fa-folder'></i>"
+  }
 }
 
 function inpherapi_list(path, callback) {

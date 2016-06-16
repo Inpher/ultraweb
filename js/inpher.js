@@ -2,7 +2,9 @@ var INPHER_REST_URL="https://api.inpher.io/ultraRest";
 
 /** Simple function to print an error message in the console */
 function print_error(error) {
-    console.log("An error occured:",error);
+    console.log("An error occured:", error);
+    $('#alertContainer').bs_alert(error.responseText);
+    window.setTimeout(function() { $(".alert-danger").alert('close'); }, 5000);
 }
 /**
  * Simple function to print its argument in the console (may be used as
@@ -130,6 +132,40 @@ function inpherapi_logout(callback) {
 	if (callback!==undefined) return callback(data);
     }
 }
+
+
+
+(function($){
+    $.fn.extend({
+        bs_alert: function(message, title){
+            var cls='alert-danger';
+            var html='<div class="alert '+cls+' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
+            if(typeof title!=='undefined' &&  title!==''){
+                html+='<h4>'+title+'</h4>';
+            }
+            html+='<span>'+message+'</span></div>';
+            $(this).html(html);
+        },
+        bs_warning: function(message, title){
+            var cls='alert-warning';
+            var html='<div class="alert '+cls+' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
+            if(typeof title!=='undefined' &&  title!==''){
+                html+='<h4>'+title+'</h4>';
+            }
+            html+='<span>'+message+'</span></div>';
+            $(this).html(html);
+        },
+        bs_info: function(message, title){
+            var cls='alert-info';
+            var html='<div class="alert '+cls+' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
+            if(typeof title!=='undefined' &&  title!==''){
+                html+='<h4>'+title+'</h4>';
+            }
+            html+='<span>'+message+'</span></div>';
+            $(this).html(html);
+        }
+    });
+})(jQuery);
 
 /*
 this will never work with the file:// protocol, so it remains commented.
