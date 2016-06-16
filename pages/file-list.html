@@ -5,12 +5,8 @@
 		</h1>
 	<!-- /.panel-heading -->
 		<div class="panel-body">
-      <div class="container">
-        <ol class="breadcrumb">
-          <li><a href="#">Home</a></li>
-          <li><a href="#">Private</a></li>
-          <li><a href="#">Pictures</a></li>
-          <li class="active">Vacation</li>
+      <div class="container-fluid">
+        <ol class="breadcrumb" id="pathNav">
         </ol>
       </div>
 			<div class="dataTable_wrapper">
@@ -37,8 +33,18 @@
 <script>
 var currentPath = '/' + sessionStorage.getItem('username')
 
+function update_path_nav(path) {
+  var pathFragments = path.split("/")
+  var htmlItems = ""
+  for(var i = 0; i < pathFragments.length; i++) {
+    htmlItems += "<li>" + pathFragments[i] + "</li>"
+  }
+  $('#pathNav').html(htmlItems)
+}
+
 $(document).ready(function () {
   // Load the table content
+  update_path_nav(currentPath)
   init_table(currentPath)
 
   $('#files').on('click', function(event) {
@@ -52,6 +58,7 @@ $(document).ready(function () {
     }
     if (t.children().length == 1) return
     currentPath = t.children().first().text()
+    update_path_nav(currentPath)
     update_table(currentPath)
   })
 })
