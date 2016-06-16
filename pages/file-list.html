@@ -33,13 +33,26 @@
 <script>
 var currentPath = '/' + sessionStorage.getItem('username')
 
+function update_currentPath(newPath) {
+  currentPath = newPath
+  update_path_nav(currentPath)
+  update_table(currentPath)
+}
+
 function update_path_nav(path) {
   var pathFragments = path.split("/")
   var htmlItems = ""
-  for(var i = 0; i < pathFragments.length; i++) {
-    htmlItems += "<li>" + pathFragments[i] + "</li>"
+  var aggregatedPath = ""
+  for(var i = 1; i < pathFragments.length; i++) {
+    aggregatedPath += "/" + pathFragments[i]
+    htmlItems += "<li data-path='" + aggregatedPath + "'>" + pathFragments[i] + "</li>"
   }
-  $('#pathNav').html(htmlItems)
+  var pathNav = $('#pathNav')
+  pathNav.html(htmlItems)
+  pathNav.children().click(function() {
+    var path = $(this).attr("data-path")
+    update_currentPath(path)
+  })
 }
 
 $(document).ready(function () {
@@ -57,9 +70,7 @@ $(document).ready(function () {
       return
     }
     if (t.children().length == 1) return
-    currentPath = t.children().first().text()
-    update_path_nav(currentPath)
-    update_table(currentPath)
+    update_currentPath(t.children().first().text())
   })
 })
 
