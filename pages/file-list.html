@@ -22,7 +22,6 @@
 				<table id="files" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
 				<thead>
 						<tr>
-              <th></th>
 							<th>Name</th>
 							<th>Size</th>
               <th>Groups Access</th>
@@ -80,7 +79,7 @@ $(document).ready(function () {
       return
     }
     if (t.children().length == 1) return
-    update_currentPath(t.children().first().next().text())
+    update_currentPath(t.find("div[data-path]").attr("data-path"))
   })
 })
 
@@ -109,7 +108,12 @@ function update_table(path, callback) {
 }
 
 function inpherapi_list_res_to_row(a) {
-  return [fsElementTypeHtmlIcon(a.type), a.path, a.size, a.groups]
+  return [fsElementIconAndNameHtml(a.type, a.path), a.size, a.groups]
+}
+
+function fsElementIconAndNameHtml(elementType, path) {
+  var name = path.substring(path.lastIndexOf("/") + 1, path.length)
+  return "<div data-path='" + path + "'>" + fsElementTypeHtmlIcon(elementType) + "&emsp;" + name + "</div>"
 }
 
 function fsElementTypeHtmlIcon(elementType) {
