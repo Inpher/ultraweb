@@ -104,8 +104,9 @@ function init_table(path) {
     if (status !== "success") {
        alert("error " + status)
     }
+    console.log(data)
     $("#files").DataTable( {
-      data: data.list.map(function(a) {return [a, "Directory", 0]})
+      data: data.list.map(inpherapi_list_res_to_row)
     } )
   })
 }
@@ -118,9 +119,13 @@ function update_table(path, callback) {
     var table = $('#files').dataTable()
     table.fnClearTable()
     if (data.list.length > 0) {
-      table.fnAddData(data.list.map(function(a) {return [a, "File", 0]}))
+      table.fnAddData(data.list.map(inpherapi_list_res_to_row))
     }
   })
+}
+
+function inpherapi_list_res_to_row(a) {
+  return [a.path, a.type, a.size]
 }
 
 function inpherapi_list(path, callback) {
