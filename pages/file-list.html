@@ -126,8 +126,8 @@ function update_table(path, callback) {
 function inpherapi_list(path, callback) {
   inpherapi_auth_get("/listDir", "dir=" + path, callback)
 }
-</script>
-<script>
+
+
 // ------------------------------------------------
 // Upload shit below
 function sendFileToServer(formData,status) {
@@ -215,12 +215,12 @@ function handleFileUpload(files,obj)
    for (var i = 0; i < files.length; i++) {
         var fd = new FormData();
         fd.append('content', files[i]);
-        fd.append('name', '/' + sessionStorage.getItem('username') + '/' + files[i].name);
+        fd.append(currentPath + '/' + files[i].name);
 
         var status = new createStatusbar(obj); //Using this we can set progress.
         status.setFileNameSize(files[i].name,files[i].size);
         sendFileToServer(fd,status);
-
+        update_table(currentPath)
    }
 }
 $(document).ready(function()
