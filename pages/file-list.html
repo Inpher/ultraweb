@@ -25,6 +25,7 @@
               <th></th>
 							<th>Name</th>
 							<th>Size</th>
+              <th>Groups Access</th>
 						</tr>
 					</thead>
 				</table>
@@ -108,11 +109,10 @@ function update_table(path, callback) {
 }
 
 function inpherapi_list_res_to_row(a) {
-  return [fsElementTypeHtmlIcon(a.type), a.path, a.size]
+  return [fsElementTypeHtmlIcon(a.type), a.path, a.size, a.groups]
 }
 
 function fsElementTypeHtmlIcon(elementType) {
-  console.log(elementType)
   if (elementType === "DOCUMENT") {
     return "<i class='fa fa-file-text'></i>"
   } else {
