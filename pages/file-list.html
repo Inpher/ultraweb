@@ -46,7 +46,10 @@
     <!-- inpher -->
     <link href="../css/inpher.css" rel="stylesheet" type="text/css">
     <script src="../js/inpher.js"></script>
-
+    <!-- DataTables JavaScript -->
+    <script src="../bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+    <script src="../bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+    <script src="../bower_components/datatables-responsive/js/dataTables.responsive.js"></script>
 </head>
 
 <body>
@@ -62,7 +65,7 @@
           <tr>
             <th>Name</th>
             <th>Kind</th>
-            <th>Size</th>
+            <th>Size</th>-->
           </tr>
         </thead>
       </table>
@@ -74,10 +77,13 @@
 <script>
 $(document).ready(function () {
   // Load the table content
-  inpherapi_list('/' + sessionStorage.getItem('user'), function(data, status) {
-    alert("Naaaaaah " + status)
+  inpherapi_list('/' + sessionStorage.getItem("username") , function(data, status) {
+    if (status !== "success") {
+       alert("error " + status)
+    }
+    console.log(data)
     $("#files").DataTable( {
-      data: data
+      data: data.list.map(function(a) {return [a, "Directory", 0]})
     } )
   })
 })
