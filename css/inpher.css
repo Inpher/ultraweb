@@ -7,6 +7,10 @@
   font-size:200%;
 }
 
+#mkdir {
+  width: 20%;
+}
+
 .progressBar {
   width: 30%;
   height: 22px;
@@ -64,4 +68,11 @@
   padding:4px 15px;
   cursor:pointer;
   vertical-align:top
+}
+
+#alertContainer{
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  z-index: 1001;
 }

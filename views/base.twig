@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="description" content="">
+	<meta name="author" content="Inpher">
+	<title>Inpher</title>
+	{% include 'global-dependencies.html' %}
+	{% block page_dependencies %}
+	{% endblock %}
+    </head>
+
+    <body>
+	<!-- Navigation -->
+	<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+	    <div class="navbar-header">
+		<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+		    <span class="sr-only">Toggle navigation</span>
+		    <span class="icon-bar"></span>
+		    <span class="icon-bar"></span>
+		    <span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand"><img style="max-width:100px;" src="../css/logo.png"></a> 
+	    </div>
+	    <!-- /.navbar-header -->
+
+	    {% block page_navigation %}
+	    {% endblock %}
+	</nav>
+
+	{% block page_content %}
+	<h1>include your custom page content here</h1>00
+	{% endblock %}
+
+	<div id="alertContainer"></div>
+
+	<div class="footer navbar-fixed-bottom">
+	    Copyright 2016 Inpher.io
+	</div>
+    </body>
+</html>

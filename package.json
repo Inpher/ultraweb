@@ -1,0 +1,23 @@
+{
+  "name": "ultraweb",
+  "version": "0.0.1",
+  "description": "run  `bower install`",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.14.0",
+    "twig": "^0.9.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/inpher/ultraweb.git"
+  },
+  "author": "Inpher",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/inpher/ultraweb/issues"
+  }
+}

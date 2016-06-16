@@ -1,13 +1,15 @@
 var INPHER_REST_URL="https://api.inpher.io/ultraRest";
 
-/** Simple function to print an error message in the console */ 
+/** Simple function to print an error message in the console */
 function print_error(error) {
-    console.log("An error occured:",error);
+    console.log("An error occured:", error);
+    $('#alertContainer').bs_alert(error.responseText);
+    window.setTimeout(function() { $(".alert-danger").alert('close'); }, 5000);
 }
-/** 
+/**
  * Simple function to print its argument in the console (may be used as
- * a debug (or default) callback 
- */ 
+ * a debug (or default) callback
+ */
 function dump(data) {
     console.log("Result:",data);
 }
@@ -16,13 +18,13 @@ function dump(data) {
  * anonymous ajax call:
  * - INPHER_REST_URL is prepended to path
  * - callback is called when done
- * - options are passed to JQuery ajax call 
+ * - options are passed to JQuery ajax call
  */
 function inpherapi_anon_ajax(path, callback, options) {
     var opt = (options===undefined)?{}:options;
     opt.url = INPHER_REST_URL + path;
     console.log("Sending Ajax Request: ",opt);
-    $.ajax(opt).done(callback).fail(print_error);    
+    $.ajax(opt).done(callback).fail(print_error);
 }
 
 /**
@@ -35,11 +37,11 @@ function inpherapi_auth_ajax(path, callback, options) {
     if (!options.headers.auth_token) return print_error('Not Logged In!');
     opt.url = INPHER_REST_URL + path;
     console.log("Sending Ajax Request: ",opt);
-    $.ajax(opt).done(callback).fail(print_error);    
+    $.ajax(opt).done(callback).fail(print_error);
 }
 
-/** 
- * anonymous ajax get. 
+/**
+ * anonymous ajax get.
  * data is appended url-encoded to the query string
  */
 function inpherapi_anon_get(path, data, callback, options) {
@@ -49,8 +51,8 @@ function inpherapi_anon_get(path, data, callback, options) {
     inpherapi_anon_ajax(path, callback, opt);
 }
 
-/** 
- * anonymous ajax post. 
+/**
+ * anonymous ajax post.
  * data is sent url-encoded as the body
  */
 function inpherapi_anon_post(path, data, callback, options) {
@@ -60,8 +62,8 @@ function inpherapi_anon_post(path, data, callback, options) {
     inpherapi_anon_ajax(path, callback, opt);
 }
 
-/** 
- * anonymous ajax post. 
+/**
+ * anonymous ajax post.
  * data serialized and sent as application/json as the body
  */
 function inpherapi_anon_post_json(path, data, callback, options) {
@@ -86,6 +88,13 @@ function inpherapi_auth_post(path, data, callback, options) {
     inpherapi_auth_ajax(path, callback, opt);
 }
 
+function inpherapi_auth_delete(path, data, callback, options) {
+    var opt = (options===undefined)?{}:options;
+    opt.data=data;
+    opt.method='DELETE';
+    inpherapi_auth_ajax(path, callback, opt);
+}
+
 function inpherapi_auth_post_json(path, data, callback, options) {
     var opt = (options===undefined)?{}:options;
     opt.method='POST';
@@ -94,7 +103,7 @@ function inpherapi_auth_post_json(path, data, callback, options) {
     inpherapi_auth_ajax(path, callback, opt);
 }
 
-/** 
+/**
  * logs-in:
  *  Calls the login function, add username and auth_token to the
  *  sessionStorage, and calls the callback upon success
@@ -110,7 +119,7 @@ function inpherapi_login(username, password, callback) {
     }
 }
 
-/** 
+/**
  * logs-out:
  *  Calls the logout function, remove username and auth_token from the
  *  sessionStorage, and calls the callback upon success
@@ -125,33 +134,80 @@ function inpherapi_logout(callback) {
 }
 
 
-var ui = {};
-ui.loadDiv = null;
-ui.loadDivName = null;
-ui.loadedDivs = {};
+(function($){
+    $.fn.extend({
+        bs_alert: function(message, title){
+            var cls='alert-danger';
+            var html='<div class="alert '+cls+' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
+            if(typeof title!=='undefined' &&  title!==''){
+                html+='<h4>'+title+'</h4>';
+            }
+            html+='<span>'+message+'</span></div>';
+            $(this).html(html);
+        },
+        bs_warning: function(message, title){
+            var cls='alert-warning';
+            var html='<div class="alert '+cls+' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
+            if(typeof title!=='undefined' &&  title!==''){
+                html+='<h4>'+title+'</h4>';
+            }
+            html+='<span>'+message+'</span></div>';
+            $(this).html(html);
+        },
+        bs_info: function(message, title){
+            var cls='alert-info';
+            var html='<div class="alert '+cls+' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
+            if(typeof title!=='undefined' &&  title!==''){
+                html+='<h4>'+title+'</h4>';
+            }
+            html+='<span>'+message+'</span></div>';
+            $(this).html(html);
+        }
+    });
+})(jQuery);
 
-function loadDiv(name) {
-    if (ui.loadedDivName==name) return;
-    if (ui.loadedDivs[name]===undefined)
-        return $.get("views/"+name+".html",{},next1);
-    else 
-	return next2();
-    function next1(data) {
-	var newdiv=$(data);
-	ui.loadedDivs[name]=newdiv;
-	$('#page-wrapper').append(newdiv);
-	return next2();
-    }
-    function next2() {
-	if (ui.loadedDivName!=null)
-	    ui.loadedDiv.hide();
-	ui.loadedDivName=name;
-	ui.loadedDiv=ui.loadedDivs[name];
-	ui.loadedDiv.show();
-    }
+
+$(function() {
+   $('#login').click(function(event){
+	//login
+	inpherapi_login($('#username').val(),$('#password').val(), function (data) {
+		window.location ="list.html";
+	});
+
+	event.preventDefault(); // avoid to execute the actual submit of the form.
+   });
+   
+   $('#register').click(function(event){
+	//login
+	inpherapi_anon_post('/register',{username: $('#username').val(), password: $('#password').val()}, function (data) {
+		if(data.status != 'success'){
+			return alert_error(data);
+		}
+		inpherapi_login($('#username').val(),$('#password').val(), function (data) {
+			window.location ="list.html";
+		});
+	});
+
+	event.preventDefault(); // avoid to execute the actual submit of the form.
+   });
+});
+
+var state = {};
+var ui = {};
+ui.loadedDiv = null;
+ui.loadedDivId = null;
+
+function showDiv(id) {
+    if (id == ui.loadedDivId) return;
+    var nextDiv = $('#'+id);
+    if (nextDiv.length==0) return console.log('this div does not exist',id);
+    if (ui.loadedDivId) ui.loadedDiv.hide();
+    ui.loadedDiv = nextDiv;
+    ui.loadedDivId = id;
+    nextDiv.show();
 }
 
 $(function() {
-    loadDiv('default');
+    showDiv('file-list-page');
 });
 
