@@ -57,7 +57,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand"><img style="max-width:100px;" src="../css/logo.png"></a> 
+                <a class="navbar-brand"><img style="max-width:100px;" src="../css/logo.png"></a>
             </div>
             <!-- /.navbar-header -->
 
@@ -89,19 +89,13 @@
                             <a id="listDir"><i class="fa fa-dashboard fa-fw"></i> List User Dir</a>
                         </li>
                         <li>
-                            <a ><i class="fa fa-bar-chart-o fa-fw"></i> Sharing Groups<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
+                            <a ><i class="fa fa-bar-chart-o fa-fw"></i> Sharing Groups
+                              <button class="btn btn-default btn-xs" type="button", id="createSharingGroupButton" data-toggle="modal" data-target="#createSharingGroupModal"><i class="fa fa-plus">
+                              </i></button>
+                              <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level", id="sharingGroupList">
                                 <li>
                                     <a>User Directory</a>
-                                </li>
-                                <li>
-                                    <a>Group 1</a>
-                                </li>
-                                <li>
-                                    <a>Group 2</a>
-                                </li>
-                                <li>
-                                    <a>Group 3</a>
                                 </li>
                             </ul>
                             <!-- /.nav-second-level -->
@@ -135,6 +129,35 @@
         Copyright 2016 Inpher.io
     </div>
 
+                            <!-- Modal -->
+                            <div class="modal fade" id="createSharingGroupModal" tabindex="-1" role="dialog" aria-labelledby="createSharingGroupModal" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">Create sharing group</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                        <div class="form-group">
+                                            <label>Group name</label>
+                                            <input class="form-control" id="createSharingGroupName">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Members</label>
+                                            <input class="form-control" id="createSharingGroupMembers">
+                                            <p class="help-block">Comma separated list of usernames.</p>
+                                        </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal" id="createSharingGroupSubmit">Create sharing group</button>
+                                        </div>
+                                    </div>
+                                    <!-- /.modal-content -->
+                                </div>
+                                <!-- /.modal-dialog -->
+                            </div>
 </body>
 
 </html>
