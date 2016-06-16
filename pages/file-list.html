@@ -78,9 +78,11 @@
 <script src="../bower_components/datatables-responsive/js/dataTables.responsive.js"></script>
 
 <script>
+var currentPath = '/' + sessionStorage.getItem('username')
+
 $(document).ready(function () {
   // Load the table content
-  init_table('/' + sessionStorage.getItem('username'))
+  init_table(currentPath)
 
   $('#files').on('click', function(event) {
     // TODO: check if it is a file or a directory
@@ -92,7 +94,8 @@ $(document).ready(function () {
       return
     }
     if (t.children().length == 1) return
-    update_table(t.children().first().text())
+    currentPath = t.children().first().text()
+    update_table(currentPath)
   })
 })
 
