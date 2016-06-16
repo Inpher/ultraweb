@@ -14,7 +14,7 @@
 							<th>Size</th>
 						</tr>
 					</thead>
-				</table>	
+				</table>
 			<div id="dragandrophandler">Drag & Drop Files Here</div>
 			</div>
 		</div>
@@ -169,7 +169,7 @@ function handleFileUpload(files,obj)
    for (var i = 0; i < files.length; i++) {
         var fd = new FormData();
         fd.append('content', files[i]);
-        fd.append(currentPath + '/' + files[i].name);
+        fd.append('name', currentPath + '/' + files[i].name);
 
         var status = new createStatusbar(obj); //Using this we can set progress.
         status.setFileNameSize(files[i].name,files[i].size);
