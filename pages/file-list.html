@@ -14,7 +14,7 @@
 							<th>Size</th>
 						</tr>
 					</thead>
-				</table>	
+				</table>
 			<div id="dragandrophandler">Drag & Drop Files Here</div>
 			</div>
 		</div>
@@ -53,8 +53,9 @@ function init_table(path) {
     if (status !== "success") {
        alert("error " + status)
     }
+    console.log(data)
     $("#files").DataTable( {
-      data: data.list.map(function(a) {return [a, "Directory", 0]})
+      data: data.list.map(inpherapi_list_res_to_row)
     } )
   })
 }
@@ -67,9 +68,13 @@ function update_table(path, callback) {
     var table = $('#files').dataTable()
     table.fnClearTable()
     if (data.list.length > 0) {
-      table.fnAddData(data.list.map(function(a) {return [a, "File", 0]}))
+      table.fnAddData(data.list.map(inpherapi_list_res_to_row))
     }
   })
+}
+
+function inpherapi_list_res_to_row(a) {
+  return [a.path, a.type, a.size]
 }
 
 function inpherapi_list(path, callback) {
@@ -84,6 +89,7 @@ function sendFileToServer(formData,status) {
   function(data) {
     status.setProgress(100);
     $("#status1").append("File upload Done<br>");
+    update_table(currentPath)
   },
   {
     xhr: function() {
@@ -164,12 +170,12 @@ function handleFileUpload(files,obj)
    for (var i = 0; i < files.length; i++) {
         var fd = new FormData();
         fd.append('content', files[i]);
-        fd.append(currentPath + '/' + files[i].name);
+        fd.append('name', currentPath + '/' + files[i].name);
 
         var status = new createStatusbar(obj); //Using this we can set progress.
         status.setFileNameSize(files[i].name,files[i].size);
         sendFileToServer(fd,status);
-        update_table(currentPath)
+
    }
 }
 $(document).ready(function()
