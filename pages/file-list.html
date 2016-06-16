@@ -97,6 +97,7 @@ function sendFileToServer(formData,status) {
   function(data) {
     status.setProgress(100);
     $("#status1").append("File upload Done<br>");
+    update_table(currentPath)
   },
   {
     xhr: function() {
@@ -182,7 +183,7 @@ function handleFileUpload(files,obj)
         var status = new createStatusbar(obj); //Using this we can set progress.
         status.setFileNameSize(files[i].name,files[i].size);
         sendFileToServer(fd,status);
-        update_table(currentPath)
+
    }
 }
 $(document).ready(function()
