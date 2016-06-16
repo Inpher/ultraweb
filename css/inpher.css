@@ -7,6 +7,10 @@
   font-size:200%;
 }
 
+#mkdir {
+  width: 20%;
+}
+
 .progressBar {
   width: 30%;
   height: 22px;
