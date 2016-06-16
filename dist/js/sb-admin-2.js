@@ -13,6 +13,9 @@ $(function() {
    $('#register').click(function(event){
 	//login
 	inpherapi_anon_post('/register',{username: $('#username').val(), password: $('#password').val()}, function (data) {
+		if(data.status != 'success'){
+			alert_error(data);
+		}
 		inpherapi_login($('#username').val(),$('#password').val(), function (data) {
 			window.location ="../index/file-list.html";
 		});
@@ -21,6 +24,8 @@ $(function() {
 	event.preventDefault(); // avoid to execute the actual submit of the form.
 	});
 });
+
+
 $(function() {
 	$('#listDir').click(function (argument) {
 		$('#page-wrapper').load('pages/file-list.html');
