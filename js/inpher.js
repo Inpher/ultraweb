@@ -124,9 +124,6 @@ function inpherapi_logout(callback) {
     }
 }
 
-/* 
-this will never work with the file:// protocol, so it remains commented.
-for now, we'll have to put all the divs in the same file
 
 var ui = {};
 ui.loadDiv = null;
@@ -136,7 +133,7 @@ ui.loadedDivs = {};
 function loadDiv(name) {
     if (ui.loadedDivName==name) return;
     if (ui.loadedDivs[name]===undefined)
-        return $.get("partial/"+name+".html",{},next1);
+        return $.get("views/"+name+".html",{},next1);
     else 
 	return next2();
     function next1(data) {
@@ -153,4 +150,8 @@ function loadDiv(name) {
 	ui.loadedDiv.show();
     }
 }
-*/
+
+$(function() {
+    loadDiv('default');
+});
+

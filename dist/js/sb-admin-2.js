@@ -21,12 +21,13 @@ $(function() {
 	event.preventDefault(); // avoid to execute the actual submit of the form.
 	});
 });
-$(function() {
-	$('#listDir').click(function (argument) {
-		$('#page-wrapper').load('pages/file-list.html');
-	});
-	$('#page-wrapper').load('pages/file-list.html');
-});
+
+//$(function() {
+//	$('#listDir').click(function (argument) {
+//		$('#page-wrapper').load('pages/file-list.html');
+//	});
+//	$('#page-wrapper').load('pages/file-list.html');
+//});
 
 
 $(function() {
