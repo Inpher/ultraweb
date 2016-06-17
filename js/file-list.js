@@ -34,7 +34,6 @@ function onFileTableClick(event) {
     if (t.is("tr")) break;
     if (t.is("table")) return;
     if (t.hasClass('delbtn')){
-      console.log("button");
       return delItem(t.attr('data-path'));
     }
     t = t.parent();
@@ -102,7 +101,7 @@ function outerHTML(element) {
 }
 
 function inpherapi_list_res_to_row(a, i) {
-  var delbtn = $('<button type="button" class="btn btn-danger btn-circle delbtn"><i class="fa fa-times-circle"></i></button>');
+  var delbtn = $('<button type="button" class="btn btn-danger btn-circle delbtn"><i class="fa fa-trash-o"></i></button>');
   delbtn.attr('data-path', a.path);
   return [outerHTML(fsElementIconAndNameHtml(a.type, a.path, i)), a.size, a.groups,outerHTML(delbtn)];
 }
@@ -132,7 +131,6 @@ function inpherapi_list(path, callback) {
 
 
 function delItem(path) {
-  console.log("delItem");
   return inpherapi_auth_delete('/delete', {path: path, recursive: true},update_table);
 }
 
