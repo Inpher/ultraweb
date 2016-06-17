@@ -178,7 +178,7 @@ function createStatusbar(obj)
 	}
 	this.filename.text(name);
 	this.size.text(sizeStr);
-    }
+    };
     this.setProgress = function(progress) {
 	var progressBarWidth =progress*this.progressBar.width()/ 100;
 	this.progressBar.find('div').animate({ width: progressBarWidth }, 10).text(progress + "% ");
@@ -186,14 +186,14 @@ function createStatusbar(obj)
 	{
 	    this.abort.hide();
 	}
-    }
+    };
     this.setAbort = function(jqxhr) {
 	var sb = this.statusbar;
 	this.abort.click(function() {
 	    jqxhr.abort();
 	    sb.hide();
 	});
-    }
+    };
 }
 
 function handleFileUpload(files,obj) {
