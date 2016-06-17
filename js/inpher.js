@@ -154,7 +154,6 @@ function createListGroups(){
       }
       sharingGroupList = {}
       for (var i = 0; i < data.length; i++) {
-          //$("#sharingGroupList").append('<li id="sharingGroupName_'+data[i]+'"><a>'+data[i]+"</a></li>");
           var a = $("<a>").text(data[i]);
           var li = $("<li>").attr("data-group",data[i]).append(a);
           $("#sharingGroupList").append(li);
