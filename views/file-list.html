@@ -18,15 +18,6 @@
 					</button>
 				    </span>
 				</div>
-					<div id="search" class="input-group">
-					    <input id="keywords" type="text" class="form-control" placeholder="Search">
-					    <span class="input-group-btn">
-						<button id="searchbtn" class="btn btn-success" type="button">
-						    <i class="fa fa-search"></i>
-						</button>
-					    </span>
-					</div>						
-			    </div>
 		    </div>
 		</div>
 		<br/>
@@ -43,15 +34,28 @@
 		    </table>
 		    <div id="dragandrophandler">Drag &amp; Drop Files Here</div>
 		</div>
-		<div class="dataTable_wrapper searchdata_wrapper">
-		    <table id="searchResults" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
-				<thead>
-				    <tr>
-						<th>Full Path</th>
-						<th>Score</th>
-				    </tr>
-				</thead>
-		    </table>
-		</div>
+		<div class="container-fluid">
+			<div class="row-fluid">
+				<div id="search" class="input-group">
+				    <input id="keywords" type="text" class="form-control" placeholder="Search">
+				    <span class="input-group-btn">
+					<button id="searchbtn" class="btn btn-success" type="button">
+					    <i class="fa fa-search"></i>
+					</button>
+				    </span>
+				</div>						
+			</div>
+
+			<div class="dataTable_wrapper searchdata_wrapper">
+			    <table id="searchResults" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+					<thead>
+					    <tr>
+							<th>Full Path</th>
+							<th>Score</th>
+					    </tr>
+					</thead>
+			    </table>
+			</div>
+	    </div>
     </div>
 </div>

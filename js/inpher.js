@@ -133,6 +133,15 @@ function inpherapi_logout(callback) {
     }
 }
 
+function inpherapi_listGroups(callback) {
+    inpherapi_auth_get("/listGroups", undefined, callback, undefined );
+}
+
+
+function inpherapi_createSharingGroup(name, usersList, callback){
+  var replace = {groupName:name, usernames:usersList};
+  inpherapi_auth_post_json("/createSharingGroup", {groupName:name, usernames:usersList}, callback, undefined);
+}
 
 (function($){
     $.fn.extend({
@@ -179,7 +188,7 @@ $(function() {
 
 	event.preventDefault(); // avoid to execute the actual submit of the form.
    });
-   
+
    $('#register').click(function(event){
 	//login
 	inpherapi_anon_post('/register',{username: $('#username').val(), password: $('#password').val()}, function (data) {
@@ -221,4 +230,3 @@ function showDiv(id) {
 $(function() {
     showDiv('file-list-page');
 });
-
