@@ -34,7 +34,6 @@ function onFileTableClick(event) {
     if (t.is("tr")) break;
     if (t.is("table")) return;
     if (t.hasClass('delbtn')){
-      console.log("button");
       return delItem(t.attr('data-path'));
     }
     t = t.parent();
@@ -116,7 +115,6 @@ function inpherapi_list(path, callback) {
 
 
 function delItem(path) {
-  console.log("delItem");
   return inpherapi_auth_delete('/delete', {path: path, recursive: true},update_table);
 }
 
