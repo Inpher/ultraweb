@@ -4,7 +4,6 @@ var INPHER_REST_URL="https://api.inpher.io/ultraRest";
 function print_error(error) {
     console.log("An error occured:", error);
     $('#alertContainer').bs_alert(error.responseText);
-    window.setTimeout(function() { $(".alert-danger").alert('close'); }, 5000);
 }
 /**
  * Simple function to print its argument in the console (may be used as
@@ -145,6 +144,7 @@ function inpherapi_logout(callback) {
             }
             html+='<span>'+message+'</span></div>';
             $(this).html(html);
+            window.setTimeout(function() { $(".alert-danger").alert('close'); }, 5000);
         },
         bs_warning: function(message, title){
             var cls='alert-warning';
@@ -154,6 +154,7 @@ function inpherapi_logout(callback) {
             }
             html+='<span>'+message+'</span></div>';
             $(this).html(html);
+            window.setTimeout(function() { $(".alert-warning").alert('close'); }, 5000);
         },
         bs_info: function(message, title){
             var cls='alert-info';
@@ -163,6 +164,7 @@ function inpherapi_logout(callback) {
             }
             html+='<span>'+message+'</span></div>';
             $(this).html(html);
+            window.setTimeout(function() { $(".alert-info").alert('close'); }, 5000);
         }
     });
 })(jQuery);
@@ -182,7 +184,7 @@ $(function() {
 	//login
 	inpherapi_anon_post('/register',{username: $('#username').val(), password: $('#password').val()}, function (data) {
 		if(data.status != 'success'){
-			return alert_error(data);
+            $('#alertContainer').bs_alert(data);
 		}
 		inpherapi_login($('#username').val(),$('#password').val(), function (data) {
 			window.location ="list.html";
@@ -190,6 +192,14 @@ $(function() {
 	});
 
 	event.preventDefault(); // avoid to execute the actual submit of the form.
+   });
+   $('#logout').click(function(event){
+    //login
+    inpherapi_auth_post('/logout','', function (data) {
+        window.location ="login.html";
+    });
+
+    event.preventDefault(); // avoid to execute the actual submit of the form.
    });
 });
 
