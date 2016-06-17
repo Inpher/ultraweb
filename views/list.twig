@@ -1,0 +1,25 @@
+{% extends 'base.twig' %}
+
+{% block page_dependencies %}
+<!-- DataTables JavaScript -->
+<script src="bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
+<script src="bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
+<script src="bower_components/datatables-responsive/js/dataTables.responsive.js"></script>
+<script src="js/file-list.js"></script>
+{% endblock %}
+
+{% block page_navigation %}
+{% include 'navigation.html' %}
+{% endblock %}
+
+{% block page_content %}
+<div id="page-wrapper">
+    <div class="row">
+	<div class="col-lg-12" id="main-container">
+	    {% include 'file-list.html'%}
+	</div>
+    </div>
+</div>
+<!-- /#page-wrapper -->
+{% endblock %}
+

@@ -2,7 +2,9 @@ var INPHER_REST_URL="https://api.inpher.io/ultraRest";
 
 /** Simple function to print an error message in the console */
 function print_error(error) {
-    console.log("An error occured:",error);
+    console.log("An error occured:", error);
+    $('#alertContainer').bs_alert(error.responseText);
+    window.setTimeout(function() { $(".alert-danger").alert('close'); }, 5000);
 }
 /**
  * Simple function to print its argument in the console (may be used as
@@ -86,6 +88,14 @@ function inpherapi_auth_post(path, data, callback, options) {
     inpherapi_auth_ajax(path, callback, opt);
 }
 
+function inpherapi_auth_delete(path, data, callback, options) {
+    var opt = (options===undefined)?{}:options;
+    //warning, data will be passed in the query string
+    opt.data=undefined;
+    opt.method='DELETE';
+    inpherapi_auth_ajax(path+'?'+$.param(data), callback, opt);
+}
+
 function inpherapi_auth_post_json(path, data, callback, options) {
     var opt = (options===undefined)?{}:options;
     opt.method='POST';
@@ -131,7 +141,7 @@ function inpherapi_listGroups(callback) {
 
 function inpherapi_createSharingGroup(name, usersList, callback){
   var replace = {groupName:name, usernames:usersList};
-  inpherapi_auth_post_json("/createSharingGroup", {groupName:name, usernames:usersList}, callback, undefined)
+  inpherapi_auth_post_json("/createSharingGroup", {groupName:name, usernames:usersList}, callback, undefined);
 }
 
 var sharingGroupList={}
@@ -140,12 +150,11 @@ function createListGroups(){
   inpherapi_listGroups(function(data, status){
     if(status=="success"){
       for(old in sharingGroupList){
-          $("#sharingGroupName_"+old).remove()
+        $("#sharingGroupName_"+old).remove();
       }
       sharingGroupList = {}
       for (var i = 0; i < data.length; i++) {
-        console.log("appending" + data[i])
-          $("#sharingGroupList").append('<li id="sharingGroupName_'+data[i]+'"><a>'+data[i]+"</a></li>")
+          $("#sharingGroupList").append('<li id="sharingGroupName_'+data[i]+'"><a>'+data[i]+"</a></li>");
           sharingGroupList[data[i]] = data[i];
         }
 
@@ -153,7 +162,7 @@ function createListGroups(){
   })
 }
 
-$(document).ready(function() {
+(function($) {$(document).ready(function() {
   createListGroups();
 $("#createSharingGroupSubmit").click(function() {
   var groupName = $("#createSharingGroupName").val();
@@ -175,33 +184,81 @@ $("#createSharingGroupSubmit").click(function() {
     }
 })
 })
-/*
-this will never work with the file:// protocol, so it remains commented.
-for now, we'll have to put all the divs in the same file
+})(jQuery);
 
+(function($){
+    $.fn.extend({
+        bs_alert: function(message, title){
+            var cls='alert-danger';
+            var html='<div class="alert '+cls+' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
+            if(typeof title!=='undefined' &&  title!==''){
+                html+='<h4>'+title+'</h4>';
+            }
+            html+='<span>'+message+'</span></div>';
+            $(this).html(html);
+        },
+        bs_warning: function(message, title){
+            var cls='alert-warning';
+            var html='<div class="alert '+cls+' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
+            if(typeof title!=='undefined' &&  title!==''){
+                html+='<h4>'+title+'</h4>';
+            }
+            html+='<span>'+message+'</span></div>';
+            $(this).html(html);
+        },
+        bs_info: function(message, title){
+            var cls='alert-info';
+            var html='<div class="alert '+cls+' alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
+            if(typeof title!=='undefined' &&  title!==''){
+                html+='<h4>'+title+'</h4>';
+            }
+            html+='<span>'+message+'</span></div>';
+            $(this).html(html);
+        }
+    });
+})(jQuery);
+
+
+$(function() {
+   $('#login').click(function(event){
+	//login
+	inpherapi_login($('#username').val(),$('#password').val(), function (data) {
+		window.location ="list.html";
+	});
+
+	event.preventDefault(); // avoid to execute the actual submit of the form.
+   });
+
+   $('#register').click(function(event){
+	//login
+	inpherapi_anon_post('/register',{username: $('#username').val(), password: $('#password').val()}, function (data) {
+		if(data.status != 'success'){
+			return alert_error(data);
+		}
+		inpherapi_login($('#username').val(),$('#password').val(), function (data) {
+			window.location ="list.html";
+		});
+	});
+
+	event.preventDefault(); // avoid to execute the actual submit of the form.
+   });
+});
+
+var state = {};
 var ui = {};
-ui.loadDiv = null;
-ui.loadDivName = null;
-ui.loadedDivs = {};
+ui.loadedDiv = null;
+ui.loadedDivId = null;
 
-function loadDiv(name) {
-    if (ui.loadedDivName==name) return;
-    if (ui.loadedDivs[name]===undefined)
-        return $.get("partial/"+name+".html",{},next1);
-    else
-	return next2();
-    function next1(data) {
-	var newdiv=$(data);
-	ui.loadedDivs[name]=newdiv;
-	$('#page-wrapper').append(newdiv);
-	return next2();
-    }
-    function next2() {
-	if (ui.loadedDivName!=null)
-	    ui.loadedDiv.hide();
-	ui.loadedDivName=name;
-	ui.loadedDiv=ui.loadedDivs[name];
-	ui.loadedDiv.show();
-    }
+function showDiv(id) {
+    if (id == ui.loadedDivId) return;
+    var nextDiv = $('#'+id);
+    if (nextDiv.length==0) return console.log('this div does not exist',id);
+    if (ui.loadedDivId) ui.loadedDiv.hide();
+    ui.loadedDiv = nextDiv;
+    ui.loadedDivId = id;
+    nextDiv.show();
 }
-*/
+
+$(function() {
+    showDiv('file-list-page');
+});
