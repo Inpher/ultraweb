@@ -1,4 +1,8 @@
 function update_currentPath(newPath) {
+  if (state.currentPath) {
+      var rootname = newPath.split('/')[1];
+      state.lastCurrentPath[rootname]=newPath;
+  }
   state.currentPath = newPath;
   update_path_nav();
   update_table();
