@@ -1,13 +1,11 @@
 {
-    "name": "iron-summit-media/startbootstrap-sb-admin-2",
-    "description": "SB Admin 2 is an open source, admin dashboard template for Bootstrap created by Start Bootstrap.",
+    "name": "Inpher restAPI demo",
+    "description": "Demo",
     "type": "component",
-    "homepage": "https://github.com/davidtmiller",
-    "license": "MIT",
+    "homepage": "www.inpher.io",
     "authors": [
         {
-            "name": "David Miller",
-            "email": "david@ironsummitmedia.com"
+            "name": "Inpher Team",
         }
     ],
     "require": {
@@ -19,10 +17,10 @@
     "extra": {
         "component": {
             "scripts": [
-                "dist/js/sb-admin-2.js"
+                "js/admin.js"
             ],
             "files": [
-                "dist/css/sb-admin-2.css"
+                "css/admin.css"
             ]
         }
     }
