@@ -89,7 +89,7 @@ function outerHTML(element) {
 }
 
 function inpherapi_list_res_to_row(a) {
-  var delbtn = $('<button type="button" class="btn btn-danger btn-circle delbtn"><i class="fa fa-times-circle"></i></button>');
+  var delbtn = $('<button type="button" class="btn btn-danger btn-circle delbtn"><i class="fa fa-trash-o"></i></button>');
   delbtn.attr('data-path', a.path);
   return [outerHTML(fsElementIconAndNameHtml(a.type, a.path)), a.size, a.groups,outerHTML(delbtn)];
 }
