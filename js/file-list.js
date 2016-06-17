@@ -37,7 +37,7 @@ function onFileTableClick(event) {
       return delItem(t.attr('data-path'));
     }
     if (t.hasClass('shareItem')) {
-      return shareItem(t.attr('data-groupath'), t.attr('data-group'));
+      return shareItem(t.attr('data-path'), t.attr('data-group'));
     }
     if (t.hasClass('dropdown')){
       return;
