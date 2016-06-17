@@ -1,16 +1,15 @@
 {
-  "name": "startbootstrap-sb-admin-2",
+  "name": "inpher-restapi-demo",
   "version": "1.0.8",
-  "homepage": "http://startbootstrap.com/template-overviews/sb-admin-2/",
+  "homepage": "www.inpher.io",
   "authors": [
-    "David Miller"
+    "Inpher Team"
   ],
-  "description": "A free, open source, Bootstrap admin theme created by Start Bootstrap",
+  "description": "Demo",
   "keywords": [
-    "bootstrap",
-    "theme"
+    "crypto",
+    "inpher"
   ],
-  "license": "Apache-2.0",
   "ignore": [
     "**/.*",
     "node_modules",
@@ -22,8 +21,8 @@
     "/js"
   ],
   "main": [
-    "dist/css/sb-admin-2.css",
-    "dist/js/sb-admin-2.js"
+    "css/admin.css",
+    "js/admin.js"
   ],
   "dependencies": {
     "bootstrap": "~3.3.6",
