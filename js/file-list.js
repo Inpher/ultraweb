@@ -43,7 +43,20 @@ function onFileTableClick(event) {
     return;
   }
   if (t.children().length == 1) return;
-  update_currentPath(t.find("div[data-path]").attr("data-path"));
+  var currentDataIndex = t.find("div[data-index]").attr("data-index");
+  if (elementIsDocument(currentListData[currentDataIndex].type)) {
+    download(currentListData[currentDataIndex].path);
+  } else {
+    update_currentPath(currentListData[currentDataIndex].path);
+  }
+}
+
+function download(path) {
+  inpherapi_auth_get("/download", {fileName: path}, function(data, status, request){
+    console.log(request);
+    var blob = new Blob([data], {type: "txt"});
+    saveAs(blob, "file.txt");
+  })
 }
 
 $(function () {
@@ -56,14 +69,8 @@ $(function () {
 });
 
 function init_table() {
-  inpherapi_list(state.currentPath, function(data, status) {
-    if (status !== "success") {
-      alert("error " + status);
-    }
-    $("#files").DataTable( {
-      data: data.list.map(inpherapi_list_res_to_row)
-    } );
-  });
+  $("#files").DataTable();
+  update_table();
 }
 
 function update_table() {
@@ -71,10 +78,15 @@ function update_table() {
     if (status !== "success") {
       alert("errror " + status);
     }
+    currentListData = data.list;
     var table = $('#files').dataTable();
     table.fnClearTable();
     if (data.list.length > 0) {
-      table.fnAddData(data.list.map(inpherapi_list_res_to_row));
+      var tableData = [];
+      for (var i = 0; i < data.list.length; i++) {
+        tableData.push(inpherapi_list_res_to_row(data.list[i], i));
+      }
+      table.fnAddData(tableData);
     }
   });
 }
@@ -89,21 +101,25 @@ function outerHTML(element) {
   return element.wrapAll('<div>').parent().html();
 }
 
-function inpherapi_list_res_to_row(a) {
+function inpherapi_list_res_to_row(a, i) {
   var delbtn = $('<button type="button" class="btn btn-danger btn-circle delbtn"><i class="fa fa-times-circle"></i></button>');
   delbtn.attr('data-path', a.path);
-  return [outerHTML(fsElementIconAndNameHtml(a.type, a.path)), a.size, a.groups,outerHTML(delbtn)];
+  return [outerHTML(fsElementIconAndNameHtml(a.type, a.path, i)), a.size, a.groups,outerHTML(delbtn)];
 }
 
-function fsElementIconAndNameHtml(elementType, path) {
+function fsElementIconAndNameHtml(elementType, path, i) {
   var name = path.substring(path.lastIndexOf("/") + 1, path.length);
   var reps = $('<div>&emsp;</div>');
-  return reps.attr('data-path',path).prepend(fsElementTypeHtmlIcon(elementType)).append(document.createTextNode(name));
+  return reps.attr('data-index',i).prepend(fsElementTypeHtmlIcon(elementType)).append(document.createTextNode(name));
+}
+
+function elementIsDocument(elementType) {
+  return elementType === "DOCUMENT";
 }
 
 function fsElementTypeHtmlIcon(elementType) {
   var reps=$('<i>').addClass('fa');
-  if (elementType === "DOCUMENT") {
+  if (elementIsDocument(elementType)) {
     return reps.addClass('fa-file-text');
   } else {
     return reps.addClass('fa-folder');
