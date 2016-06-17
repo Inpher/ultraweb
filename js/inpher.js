@@ -150,12 +150,15 @@ function createListGroups(){
   inpherapi_listGroups(function(data, status){
     if(status=="success"){
       for(old in sharingGroupList){
-        $("#sharingGroupName_"+old).remove();
+        sharingGroupList[old].remove();
       }
       sharingGroupList = {}
       for (var i = 0; i < data.length; i++) {
-          $("#sharingGroupList").append('<li id="sharingGroupName_'+data[i]+'"><a>'+data[i]+"</a></li>");
-          sharingGroupList[data[i]] = data[i];
+          //$("#sharingGroupList").append('<li id="sharingGroupName_'+data[i]+'"><a>'+data[i]+"</a></li>");
+          var a = $("<a>").text(data[i]);
+          var li = $("<li>").attr("data-group",data[i]).append(a);
+          $("#sharingGroupList").append(li);
+          sharingGroupList[data[i]] = li;
         }
 
     }
