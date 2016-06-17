@@ -144,50 +144,6 @@ function inpherapi_createSharingGroup(name, usersList, callback){
   inpherapi_auth_post_json("/createSharingGroup", {groupName:name, usernames:usersList}, callback, undefined);
 }
 
-var sharingGroupList={}
-
-function createListGroups(){
-  inpherapi_listGroups(function(data, status){
-    if(status=="success"){
-      for(old in sharingGroupList){
-        sharingGroupList[old].remove();
-      }
-      sharingGroupList = {}
-      for (var i = 0; i < data.length; i++) {
-          var a = $("<a>").text(data[i]);
-          var li = $("<li>").attr("data-group",data[i]).append(a);
-          $("#sharingGroupList").append(li);
-          sharingGroupList[data[i]] = li;
-        }
-
-    }
-  })
-}
-
-(function($) {$(document).ready(function() {
-  createListGroups();
-$("#createSharingGroupSubmit").click(function() {
-  var groupName = $("#createSharingGroupName").val();
-  var members = $("#createSharingGroupMembers").val();
-  if(groupName != undefined && members != undefined){
-    members = members.split(",");
-    groupName = groupName.trim();
-    for (var i = 0; i < members.length; i++) {
-      members[i] = members[i].trim();
-    }
-    inpherapi_createSharingGroup(groupName, members, function(data, status) {
-      if (status=="success")
-        alert("Sharing group successfully created");
-        else {
-          alert("Failed to create sharing group");
-        }
-        createListGroups();
-      })
-    }
-})
-})
-})(jQuery);
-
 (function($){
     $.fn.extend({
         bs_alert: function(message, title){
