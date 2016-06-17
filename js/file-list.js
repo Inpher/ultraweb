@@ -66,7 +66,7 @@ function init_table() {
     });
 }
 
-function update_table(callback) {
+function update_table() {
     inpherapi_list(state.currentPath, function(data, status) {
 	if (status !== "success") {
 	    alert("errror " + status);
@@ -79,7 +79,13 @@ function update_table(callback) {
     });
 }
 
+/** 
+ * This function returns the outerHTML jQuert element which is not connected to the DOM
+ * (Unpredictable behaviour if the element is in the DOM)
+ */
 function outerHTML(element) {
+    var try1 = element[0].outerHTML;
+    if (try1) return try1;
     return element.wrapAll('<div>').parent().html();
 }
 
@@ -111,10 +117,7 @@ function inpherapi_list(path, callback) {
 
 function delItem(path) {
     console.log("delItem");
-    return inpherapi_auth_delete('/delete', {path: path, recursive: true},next);
-    function next(e) {
-	update_table(state.currentPath);
-    }
+    return inpherapi_auth_delete('/delete', {path: path, recursive: true},update_table);
 }
 
 // ------------------------------------------------

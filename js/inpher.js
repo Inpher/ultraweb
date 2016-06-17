@@ -90,9 +90,10 @@ function inpherapi_auth_post(path, data, callback, options) {
 
 function inpherapi_auth_delete(path, data, callback, options) {
     var opt = (options===undefined)?{}:options;
-    opt.data=data;
+    //warning, data will be passed in the query string
+    opt.data=undefined;
     opt.method='DELETE';
-    inpherapi_auth_ajax(path, callback, opt);
+    inpherapi_auth_ajax(path+'?'+$.param(data), callback, opt);
 }
 
 function inpherapi_auth_post_json(path, data, callback, options) {
