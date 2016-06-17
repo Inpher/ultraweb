@@ -84,6 +84,11 @@
 /*
    DROPDOWN STUFF
 */
+.dropdown {
+  display: inline-block;
+  margin-left: 10px;
+}
+
 .dropdown-menu {
   position: absolute;
   top: 100%;
