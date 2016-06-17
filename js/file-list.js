@@ -88,6 +88,7 @@ function inpherapiShareElement(path, group, shareName) {
 $(function () {
   // Load the table content
   state.currentPath = '/' + sessionStorage.getItem('username');
+  state.username = sessionStorage.getItem('username');
   update_path_nav();
   init_table();
   $('#pathNav').click(onPathNavClick);
