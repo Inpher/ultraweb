@@ -65,7 +65,24 @@ function download(path) {
 }
 
 function shareItem(path, group) {
-  alert("toto");
+  $('#createShareModal').modal("show");
+  $('#createShareSubmit').on("click", function(){
+    var shareName = $('#createShareName').val();
+    inpherapiShareElement(path, group, shareName);
+  })
+}
+
+function inpherapiShareElement(path, group, shareName) {
+  var queryParam = {
+    "groupName" : group,
+    "filePath" : path,
+    "shareName" : shareName,
+  };
+  inpherapi_auth_get("/shareElement", queryParam, function(data, status) {
+    if (status === "success") {
+      alert("success");
+    }
+  });
 }
 
 $(function () {
@@ -153,7 +170,7 @@ function fsElementGroupCol(groups, path) {
 }
 
 function inpherListGroups() {
-  return ["test", "blah", "blu"];
+  return state.sharingGroupList;
 }
 
 function inpherapi_list(path, callback) {
