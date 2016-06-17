@@ -4,7 +4,7 @@ function updateListGroupsCallback(data, status) {
     if(status!="success") return;
     state.sharingGroupList=data;
     var sharingGroupNav = $("#sharingGroupList");
-    sharingGroupNav.html();
+    sharingGroupNav.html('');
     ui.sharingGroupNavLi = {};
     for (var i = 0; i < data.length; i++) {
 	var a = $("<a>").text(data[i]);
@@ -15,6 +15,13 @@ function updateListGroupsCallback(data, status) {
 
 function updateListGroups(){
   inpherapi_listGroups(updateListGroupsCallback);
+}
+
+function handleListGroupsClick(event) {
+    var li = $(event.target).closest('li[data-group]',this);
+    if (li.length==0) return console.log("we didn't click on a group name");
+    var groupName = li.attr('data-group');
+    update_currentPath('/'+groupName); 
 }
 
 function handleCreateSharingGroupSubmit() {
@@ -58,6 +65,7 @@ $(function() {
   updateListGroups();
 
   $("#createSharingGroupSubmit").click(handleCreateSharingGroupSubmit);
+  $("#sharingGroupList").click(handleListGroupsClick);
 });
 
 
