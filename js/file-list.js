@@ -36,6 +36,12 @@ function onFileTableClick(event) {
     if (t.hasClass('delbtn')){
       return delItem(t.attr('data-path'));
     }
+    if (t.hasClass('shareItem')) {
+      return shareItem(t.attr('data-path'), t.attr('data-group'));
+    }
+    if (t.hasClass('dropdown')){
+      return;
+    }
     t = t.parent();
   }
   if (!t.parent().is("tbody")) {
@@ -56,6 +62,10 @@ function download(path) {
     var blob = new Blob([data], {type: "txt"});
     saveAs(blob, "file.txt");
   })
+}
+
+function shareItem(path, group) {
+  alert("toto");
 }
 
 $(function () {
@@ -103,7 +113,7 @@ function outerHTML(element) {
 function inpherapi_list_res_to_row(a, i) {
   var delbtn = $('<button type="button" class="btn btn-danger btn-circle delbtn"><i class="fa fa-trash-o"></i></button>');
   delbtn.attr('data-path', a.path);
-  return [outerHTML(fsElementIconAndNameHtml(a.type, a.path, i)), a.size, a.groups,outerHTML(delbtn)];
+  return [outerHTML(fsElementIconAndNameHtml(a.type, a.path, i)), a.size, outerHTML(fsElementGroupCol(a.groups, a.path)),outerHTML(delbtn)];
 }
 
 function fsElementIconAndNameHtml(elementType, path, i) {
@@ -123,6 +133,27 @@ function fsElementTypeHtmlIcon(elementType) {
   } else {
     return reps.addClass('fa-folder');
   }
+}
+
+function fsElementGroupCol(groups, path) {
+  var dropdown = $("<div>").attr("class", "dropdown");
+  var button = $("<button>").attr("class", "btn btn-primary btn-circle").attr("type", "button").attr("data-toggle", "dropdown");
+  button.append('<i class="fa fa-share"/>')
+  dropdown.append(button);
+  var listHtml = $("<ul class='dropdown-menu'/>");
+  var listGroups = inpherListGroups();
+  for(var i = 0; i < listGroups.length; i++) {
+    var li = $("<li class='shareItem'>").append(listGroups[i]);
+    li.attr("data-group", listGroups[i]).attr("data-path", path);
+    listHtml.append(li);
+  }
+  dropdown.append(listHtml);
+  dropdown.prepend(groups);
+  return dropdown;
+}
+
+function inpherListGroups() {
+  return ["test", "blah", "blu"];
 }
 
 function inpherapi_list(path, callback) {
