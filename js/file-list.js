@@ -280,13 +280,15 @@ function handleFileUpload(files,obj) {
 }
 
 function handleMkdir(event) {
+  event.stopPropagation();
+  event.preventDefault();
   var dirname = $("#mkdirname").val();
   inpherapi_auth_post('/mkdir', { dir: state.currentPath + "/"  + dirname }, update_table);
 }
 
 
 $(function() {
-  $("#mkdirbtn").click(handleMkdir);
+  $("#mkdir-form").submit(handleMkdir);
 
   var obj = $("#dragandrophandler");
   obj.on('dragenter', function (e) {
@@ -327,7 +329,7 @@ $(function() {
 // ------------------------------------------------
 
 $(function () {
-	$('#searchbtn').click(inpherapi_search);
+	$('#search-form').submit(handleSearchFormSubmit);
 	$('#searchResults').click(function(e){
 	  var t = $(event.target);
 	  while (!t.is(this)) {
@@ -353,10 +355,17 @@ $(function () {
 	var table = $('#searchResults').dataTable({'searching':false});
 });
 
+function handleSearchFormSubmit(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    inpherapi_search();
+}
+
 function inpherapi_search() {
 	var words = $('#keywords').val();
 	inpherapi_auth_get("/search", {keywords: words}, function(data){
-		var table = $('#searchResults').dataTable();
+		state.searchResults=data;
+	        var table = $('#searchResults').dataTable();
 		table.fnClearTable();
 		if (data.totalHits > 0) {
 			table.fnAddData(data.results.map(inpherapi_search_res_to_row));

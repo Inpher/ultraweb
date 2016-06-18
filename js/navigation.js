@@ -16,6 +16,7 @@ function updateListGroups(){
 }
 
 function showPathInFileView(userOrGroupName) {
+    showDiv('file-list-page');
     var lastPath=state.lastCurrentPath[userOrGroupName]; 
     if (lastPath!==undefined)
 	return update_currentPath(lastPath);
@@ -31,6 +32,10 @@ function handleListGroupsClick(event) {
 
 function handleNavListUserDir(event) {
     showPathInFileView(state.username);
+}
+
+function handleNavListSearchClick(event) {
+    showDiv('search-page');
 }
 
 function handleCreateSharingGroupSubmit(event) {
@@ -90,6 +95,6 @@ $(function() {
   $("#sharingGroupList").click(handleListGroupsClick);
   $("#navListUserDir").click(handleNavListUserDir);
   $("#createSharingGroupButton").click(handleSharingGroupCreateButtonClicked);
+  $("#navListSearch").click(handleNavListSearchClick);
 });
-
 

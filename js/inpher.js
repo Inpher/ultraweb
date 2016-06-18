@@ -228,5 +228,6 @@ function showDiv(id) {
 }
 
 $(function() {
+    $('#main-container>div').hide();
     showDiv('file-list-page');
 });
