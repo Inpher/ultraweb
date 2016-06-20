@@ -27,10 +27,20 @@ function handleListGroupsClick(event) {
     var li = $(event.target).closest('li[data-group]',this);
     if (li.length==0) return console.log("we didn't click on a group name");
     var groupName = li.attr('data-group');
+    hideUpload();
     showPathInFileView(groupName);
 }
 
+function hideUpload(){
+    $("#dragandrophandler").hide();
+}
+
+function showUpload(){
+    $("#dragandrophandler").show();
+}
+
 function handleNavListUserDir(event) {
+    showUpload();
     showPathInFileView(state.username);
 }
 
