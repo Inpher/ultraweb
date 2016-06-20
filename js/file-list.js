@@ -347,7 +347,7 @@ $(function () {
 
 function inpherapi_search() {
 	var words = $('#keywords').val();
-	inpherapi_auth_get("/search", {keywords: words}, function(data){
+	inpherapi_auth_post("/search", {keywords: words}, function(data){
 		var table = $('#searchResults').dataTable();
 		table.fnClearTable();
 		if (data.totalHits > 0) {

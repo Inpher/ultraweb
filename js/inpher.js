@@ -153,7 +153,6 @@ function inpherapi_createSharingGroup(name, usersList, callback){
             }
             html+='<span>'+message+'</span></div>';
             $(this).html(html);
-            window.setTimeout(function() { $(".alert-danger").alert('close'); }, 5000);
         },
         bs_warning: function(message, title){
             var cls='alert-warning';
@@ -163,7 +162,6 @@ function inpherapi_createSharingGroup(name, usersList, callback){
             }
             html+='<span>'+message+'</span></div>';
             $(this).html(html);
-            window.setTimeout(function() { $(".alert-warning").alert('close'); }, 5000);
         },
         bs_info: function(message, title){
             var cls='alert-info';
@@ -173,7 +171,6 @@ function inpherapi_createSharingGroup(name, usersList, callback){
             }
             html+='<span>'+message+'</span></div>';
             $(this).html(html);
-            window.setTimeout(function() { $(".alert-info").alert('close'); }, 5000);
         }
     });
 })(jQuery);
