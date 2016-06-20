@@ -4,6 +4,7 @@ var INPHER_REST_URL="https://api.inpher.io/ultraRest";
 function print_error(error) {
     console.log("An error occured:", error);
     $('#alertContainer').bs_alert(error.responseText);
+
 }
 /**
  * Simple function to print its argument in the console (may be used as
@@ -113,6 +114,10 @@ function inpherapi_login(username, password, callback) {
     sessionStorage.removeItem('auth_token');
     return inpherapi_anon_post('/login',{username:username,password:password},next);
     function next(data) {
+
+    $('#login').attr("disabled", false);
+    $('#register').attr("disabled", false);
+
 	sessionStorage.setItem('username',data.username);
 	sessionStorage.setItem('auth_token',data.auth_token);
 	if (callback!==undefined) return callback(data);

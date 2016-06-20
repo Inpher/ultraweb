@@ -23,7 +23,10 @@ $(function () {
     	inpherapi_search();
     }
   });
-	var table = $('#searchResults').DataTable({'searching':false});
+	var table = $('#searchResults').DataTable({
+		'searching':false,  
+		"bRetrieve":true 
+	});
 });
 
 function handleSearchFormSubmit(event) {
