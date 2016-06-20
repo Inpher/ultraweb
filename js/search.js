@@ -37,8 +37,8 @@ function handleSearchFormSubmit(event) {
 
 function inpherapi_search() {
 	var words = $('#keywords').val();
-	inpherapi_auth_post("/search", {keywords: words}, function(data){
-		var table = $('#searchResults').DataTable();
+	inpherapi_auth_post("/search", {query: words}, function(data){
+		var table = $('#searchResults').dataTable();
 		table.fnClearTable();
 		if (data.totalHits > 0) {
 			table.fnAddData(data.results.map(inpherapi_search_res_to_row));
