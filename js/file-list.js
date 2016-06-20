@@ -1,4 +1,8 @@
 function update_currentPath(newPath) {
+  if (state.currentPath) {
+      var rootname = newPath.split('/')[1];
+      state.lastCurrentPath[rootname]=newPath;
+  }
   state.currentPath = newPath;
   update_path_nav();
   update_table();
@@ -78,7 +82,7 @@ function inpherapiShareElement(path, group, shareName) {
     "filePath" : path,
     "shareName" : shareName,
   };
-  inpherapi_auth_get("/shareElement", queryParam, function(data, status) {
+  inpherapi_auth_post("/shareElement", queryParam, function(data, status) {
     if (status === "success") {
       alert("success");
     }
@@ -131,7 +135,12 @@ function outerHTML(element) {
 function inpherapi_list_res_to_row(a, i) {
   var delbtn = $('<button type="button" class="btn btn-danger btn-circle delbtn"><i class="fa fa-trash-o"></i></button>');
   delbtn.attr('data-path', a.path);
-  return [outerHTML(fsElementIconAndNameHtml(a.type, a.path, i)), a.size, outerHTML(fsElementGroupCol(a.groups, a.path)),outerHTML(delbtn)];
+  return [
+    outerHTML(fsElementIconAndNameHtml(a.type, a.path, i)),
+    a.size,
+    a.groups,
+    outerHTML($("<div>").append(delbtn).append(createShareElementButton(a.path)))
+  ];
 }
 
 function fsElementIconAndNameHtml(elementType, path, i) {
@@ -153,7 +162,7 @@ function fsElementTypeHtmlIcon(elementType) {
   }
 }
 
-function fsElementGroupCol(groups, path) {
+function createShareElementButton(path) {
   var dropdown = $("<div>").attr("class", "dropdown");
   var button = $("<button>").attr("class", "btn btn-primary btn-circle").attr("type", "button").attr("data-toggle", "dropdown");
   button.append('<i class="fa fa-share"/>')
@@ -166,7 +175,6 @@ function fsElementGroupCol(groups, path) {
     listHtml.append(li);
   }
   dropdown.append(listHtml);
-  dropdown.prepend(groups);
   return dropdown;
 }
 
@@ -272,13 +280,15 @@ function handleFileUpload(files,obj) {
 }
 
 function handleMkdir(event) {
+  event.stopPropagation();
+  event.preventDefault();
   var dirname = $("#mkdirname").val();
   inpherapi_auth_post('/mkdir', { dir: state.currentPath + "/"  + dirname }, update_table);
 }
 
 
 $(function() {
-  $("#mkdirbtn").click(handleMkdir);
+  $("#mkdir-form").submit(handleMkdir);
 
   var obj = $("#dragandrophandler");
   obj.on('dragenter', function (e) {
@@ -319,7 +329,7 @@ $(function() {
 // ------------------------------------------------
 
 $(function () {
-	$('#searchbtn').click(inpherapi_search);
+	$('#search-form').submit(handleSearchFormSubmit);
 	$('#searchResults').click(function(e){
 	  var t = $(event.target);
 	  while (!t.is(this)) {
@@ -345,6 +355,12 @@ $(function () {
 	var table = $('#searchResults').dataTable({'searching':false});
 });
 
+function handleSearchFormSubmit(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    inpherapi_search();
+}
+
 function inpherapi_search() {
 	var words = $('#keywords').val();
 	inpherapi_auth_post("/search", {keywords: words}, function(data){
@@ -362,4 +378,3 @@ function inpherapi_search_res_to_row(el, i) {
 	reps.attr('data-path', el.path).prepend(icon).append(document.createTextNode(el.path));
 	return [outerHTML(reps), el.score];
 }
-
