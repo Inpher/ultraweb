@@ -140,3 +140,11 @@
 .open > a {
   outline: 0;
 }
+
+.nav > li > a {
+  cursor: pointer;
+}
+
+.navbar-brand {
+  cursor: pointer;
+}
