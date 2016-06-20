@@ -178,6 +178,8 @@ function inpherapi_createSharingGroup(name, usersList, callback){
 
 $(function() {
    $('#login').click(function(event){
+    $('#login').attr("disabled", true);
+    $('#register').attr("disabled", true);
 	//login
 	inpherapi_login($('#username').val(),$('#password').val(), function (data) {
 		window.location ="list.html";
@@ -187,11 +189,16 @@ $(function() {
    });
 
    $('#register').click(function(event){
-	//login
+
+    $('#login').attr("disabled", true);
+    $('#register').attr("disabled", true);
+	//register
 	inpherapi_anon_post('/register',{username: $('#username').val(), password: $('#password').val()}, function (data) {
 		if(data.status != 'success'){
             $('#alertContainer').bs_alert(data);
 		}
+
+        // login
 		inpherapi_login($('#username').val(),$('#password').val(), function (data) {
 			window.location ="list.html";
 		});
