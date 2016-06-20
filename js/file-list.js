@@ -1,9 +1,19 @@
 function update_currentPath(newPath) {
+  var rootname = newPath.split('/')[1];
   if (state.currentPath) {
-      var rootname = newPath.split('/')[1];
       state.lastCurrentPath[rootname]=newPath;
   }
   state.currentPath = newPath;
+  console.log(newPath.split('/').length);
+  if (rootname === state.username) {
+     showUpload();
+  }
+  else if (newPath.split('/').length > 2) {
+     showUpload();
+  }
+  else {
+     hideUpload();
+  }
   update_path_nav();
   update_table();
 }
