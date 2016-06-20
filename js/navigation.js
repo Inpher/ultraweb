@@ -1,5 +1,3 @@
-state.sharingGroupList={};
-
 function updateListGroupsCallback(data, status) {
     if(status!="success") return;
     state.sharingGroupList=data;
@@ -17,20 +15,38 @@ function updateListGroups(){
   inpherapi_listGroups(updateListGroupsCallback);
 }
 
+function showPathInFileView(userOrGroupName) {
+    showDiv('file-list-page');
+    var lastPath=state.lastCurrentPath[userOrGroupName]; 
+    if (lastPath!==undefined)
+	return update_currentPath(lastPath);
+    update_currentPath('/'+userOrGroupName); 
+}
+
 function handleListGroupsClick(event) {
     var li = $(event.target).closest('li[data-group]',this);
     if (li.length==0) return console.log("we didn't click on a group name");
     var groupName = li.attr('data-group');
-    update_currentPath('/'+groupName); 
+    showPathInFileView(groupName);
 }
 
-function handleCreateSharingGroupSubmit() {
+function handleNavListUserDir(event) {
+    showPathInFileView(state.username);
+}
+
+function handleNavListSearchClick(event) {
+    showDiv('search-page');
+}
+
+function handleCreateSharingGroupSubmit(event) {
+  event.stopPropagation();
+  event.preventDefault();
   var groupName = $("#createSharingGroupName").val();
   var tmpmembers = $("#createSharingGroupMembers").val();
   var myself = $("#createSharingGroupAddMyself").is(':checked')
   if (myself) tmpmembers += ';'+state.username;
   groupName = groupName.trim();
-  if(groupName == '') return console.log("Group name is empty, we'll do nothing");
+  if(groupName == '') return $('#alertContainer').bs_alert("Group name is empty, we'll do nothing");
   var separator = new RegExp("[ ,;]+","g");
   tmpmembers = tmpmembers.trim().split(separator);
   var set = {};
@@ -42,17 +58,27 @@ function handleCreateSharingGroupSubmit() {
       set[mname]=1;
       finalMembers.push(mname);
   }
-  if(finalMembers.length == 0) return console.log("members are empty, we'll do nothing");
+  if(finalMembers.length == 0) return $('#alertContainer').bs_alert("members are empty, we'll do nothing");
   return inpherapi_createSharingGroup(groupName, finalMembers, next1);
   function next1(data, status) {
       if (status!="success") 
 	  return $('#alertContainer').bs_alert("Failed to create sharing group");
-      else
-	  return updateListGroups();
+      hideCreateSharingGroupModal();
+      $('#alertContainer').bs_info("Sharing Group Created!");
+      return updateListGroups();
   }
 }
 
+function handleSharingGroupCreateButtonClicked(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    showCreateSharingGroupModal();
+}
+
 function showCreateSharingGroupModal() {
+   $("#createSharingGroupName").val('');
+   $("#createSharingGroupMembers").val('');
+   $("#createSharingGroupAddMyself").prop('checked',true);
    $('#createSharingGroupModal').modal('show');
 }
 
@@ -62,10 +88,13 @@ function hideCreateSharingGroupModal() {
 
 $(function() {
   state.sharingGroupList={};
+  state.lastCurrentPath={};
   updateListGroups();
 
-  $("#createSharingGroupSubmit").click(handleCreateSharingGroupSubmit);
+  $("#createSharingGroupForm").submit(handleCreateSharingGroupSubmit);
   $("#sharingGroupList").click(handleListGroupsClick);
+  $("#navListUserDir").click(handleNavListUserDir);
+  $("#createSharingGroupButton").click(handleSharingGroupCreateButtonClicked);
+  $("#navListSearch").click(handleNavListSearchClick);
 });
-
 

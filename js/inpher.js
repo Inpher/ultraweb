@@ -4,6 +4,7 @@ var INPHER_REST_URL="https://api.inpher.io/ultraRest";
 function print_error(error) {
     console.log("An error occured:", error);
     $('#alertContainer').bs_alert(error.responseText);
+
 }
 /**
  * Simple function to print its argument in the console (may be used as
@@ -113,6 +114,10 @@ function inpherapi_login(username, password, callback) {
     sessionStorage.removeItem('auth_token');
     return inpherapi_anon_post('/login',{username:username,password:password},next);
     function next(data) {
+
+    $('#login').attr("disabled", false);
+    $('#register').attr("disabled", false);
+
 	sessionStorage.setItem('username',data.username);
 	sessionStorage.setItem('auth_token',data.auth_token);
 	if (callback!==undefined) return callback(data);
@@ -153,7 +158,6 @@ function inpherapi_createSharingGroup(name, usersList, callback){
             }
             html+='<span>'+message+'</span></div>';
             $(this).html(html);
-            window.setTimeout(function() { $(".alert-danger").alert('close'); }, 5000);
         },
         bs_warning: function(message, title){
             var cls='alert-warning';
@@ -163,7 +167,6 @@ function inpherapi_createSharingGroup(name, usersList, callback){
             }
             html+='<span>'+message+'</span></div>';
             $(this).html(html);
-            window.setTimeout(function() { $(".alert-warning").alert('close'); }, 5000);
         },
         bs_info: function(message, title){
             var cls='alert-info';
@@ -173,7 +176,6 @@ function inpherapi_createSharingGroup(name, usersList, callback){
             }
             html+='<span>'+message+'</span></div>';
             $(this).html(html);
-            window.setTimeout(function() { $(".alert-info").alert('close'); }, 5000);
         }
     });
 })(jQuery);
@@ -181,6 +183,8 @@ function inpherapi_createSharingGroup(name, usersList, callback){
 
 $(function() {
    $('#login').click(function(event){
+    $('#login').attr("disabled", true);
+    $('#register').attr("disabled", true);
 	//login
 	inpherapi_login($('#username').val(),$('#password').val(), function (data) {
 		window.location ="list.html";
@@ -190,11 +194,16 @@ $(function() {
    });
 
    $('#register').click(function(event){
-	//login
+
+    $('#login').attr("disabled", true);
+    $('#register').attr("disabled", true);
+	//register
 	inpherapi_anon_post('/register',{username: $('#username').val(), password: $('#password').val()}, function (data) {
 		if(data.status != 'success'){
             $('#alertContainer').bs_alert(data);
 		}
+
+        // login
 		inpherapi_login($('#username').val(),$('#password').val(), function (data) {
 			window.location ="list.html";
 		});
@@ -228,5 +237,6 @@ function showDiv(id) {
 }
 
 $(function() {
+    $('#main-container>div').hide();
     showDiv('file-list-page');
 });
