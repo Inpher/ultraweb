@@ -290,15 +290,19 @@ function handleFileUpload(files,obj) {
 }
 
 function handleMkdir(event) {
-  event.stopPropagation();
-  event.preventDefault();
-  var dirname = $("#mkdirname").val();
-  inpherapi_auth_post('/mkdir', { dir: state.currentPath + "/"  + dirname }, update_table);
+  if (event.isDefaultPrevented()) {
+    // TODO: failure
+  } else {
+    event.stopPropagation();
+    event.preventDefault();
+    var dirname = $("#mkdirname").val();
+    inpherapi_auth_post('/mkdir', { dir: state.currentPath + "/"  + dirname }, update_table);
+  }
 }
 
 
 $(function() {
-  $("#mkdir-form").submit(handleMkdir);
+  $("#mkdir-form").validator().submit(handleMkdir);
 
   var obj = $("#dragandrophandler");
   obj.on('dragenter', function (e) {
