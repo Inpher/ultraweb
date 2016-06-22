@@ -25,7 +25,11 @@ function update_path_nav() {
   pathNav.html('');
   for(var i = 1; i < pathFragments.length; i++) {
     aggregatedPath += "/" + pathFragments[i];
-    var li = $('<li>').attr('data-path',aggregatedPath).text(pathFragments[i]);
+
+    // var li = $('<li>').attr('data-path',aggregatedPath).text(pathFragments[i]);
+    var a = $('<a>').text(pathFragments[i]).attr('href', '#');
+    var li = $('<li>').attr('data-path', aggregatedPath);
+    li.append(a);
     pathNav.append(li);
   }
   pathNav.children().click(function() {

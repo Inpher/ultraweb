@@ -152,10 +152,6 @@
   cursor: pointer;
 }
 
-.breadcrumb > li {
-  cursor: pointer;
-}
-
 .dt-button, .dt-button:hover {
   background: transparent !important;
   border: none !important;
@@ -171,8 +167,11 @@
   width: 1%;
 }
 
-/* Drag & drop */
+#files tr {
+  cursor: pointer;
+}
 
+/* Drag & drop */
 #dragandrophandler {
     position:fixed;
     top:0;
@@ -191,7 +190,79 @@
     opacity:1;
     z-index:1002;
 }
+/* Drag & drop over */
+
 
 /* breadcrums magic */
+.breadcrumb {
+    padding: 0px;
+  background: #D4D4D4;
+  list-style: none; 
+  overflow: hidden;
+    margin-top: 20px;
+}
+.breadcrumb>li+li:before {
+  padding: 0;
+}
+.breadcrumb li { 
+  float: left; 
+}
+.breadcrumb li:last-of-type a {
+  background: green;                   /* fallback color */
+  background: #5cb85c ; 
+}
+.breadcrumb li.completed a {
+  background: brown;                   /* fallback color */
+  background: hsla(153, 57%, 51%, 1); 
+}
+.breadcrumb li:last-of-type a:after {
+  border-left: 30px solid #5cb85c ;
+}
+.breadcrumb li.completed a:after {
+  border-left: 30px solid hsla(153, 57%, 51%, 1);
+} 
 
+.breadcrumb li a {
+  color: white;
+  text-decoration: none; 
+  padding: 10px 0 10px 45px;
+  position: relative; 
+  display: block;
+  float: left;
+}
+
+.breadcrumb li a:after { 
+  content: " "; 
+  display: block; 
+  width: 0; 
+  height: 0;
+  border-top: 50px solid transparent;           /* Go big on the size, and let overflow hide */
+  border-bottom: 50px solid transparent;
+  border-left: 30px solid hsla(0, 0%, 83%, 1);
+  position: absolute;
+  top: 50%;
+  margin-top: -50px; 
+  left: 100%;
+  z-index: 2; 
+} 
+.breadcrumb li a:before { 
+  content: " "; 
+  display: block; 
+  width: 0; 
+  height: 0;
+  border-top: 50px solid transparent;           /* Go big on the size, and let overflow hide */
+  border-bottom: 50px solid transparent;
+  border-left: 30px solid white;
+  position: absolute;
+  top: 50%;
+  margin-top: -50px; 
+  margin-left: 1px;
+  left: 100%;
+  z-index: 1; 
+} 
+.breadcrumb li:first-child a {
+  padding-left: 15px;
+}
+.breadcrumb li a:hover { background: #449d44  ; }
+.breadcrumb li a:hover:after { border-left-color: #449d44   !important; }
 /* breadcrums magic over */
