@@ -114,7 +114,7 @@ $(function () {
 function fileUploadForm(e){
 	e.preventDefault();
   e.stopPropagation();
-  var obj = $(".dragandrophandler");
+  var obj = $('#file-list-page');
  	handleFileUpload($('#uploadFileModal input[type=file]')[0].files, obj);
  	$('#uploadFileModal').modal('hide');
 }
@@ -345,11 +345,13 @@ $(function() {
     e.stopPropagation();
     e.preventDefault();
     $('#dragandrophandler').removeClass('hidden');
+    $('#uploadFileModal').modal('hide');
     console.log('dragenter');
   });
   obj.on('dragover', function (e) {
     e.stopPropagation();
     e.preventDefault();
+    $('#uploadFileModal').modal('hide');
   });
   obj.on('drop', function (e) {
   	dragging = 0;
@@ -358,7 +360,7 @@ $(function() {
     $('#dragandrophandler').addClass('hidden');
     console.log('drop');
     //We need to send dropped files to Server
-    handleFileUpload(files,obj);
+    handleFileUpload(files, $('#file-list-page'));
   });
   obj.on('dragleave', function (e) {
   	dragging--;
