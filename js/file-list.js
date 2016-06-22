@@ -123,23 +123,28 @@ function init_table() {
   $("#files").DataTable({
   	'searching':false,
   	dom: 'Bfrtip',
-    lengthMenu: [
-        [ 10, 25, 50, -1 ],
-        [ '10 rows', '25 rows', '50 rows', 'Show all' ]
-    ],
     buttons: [
-        'pageLength',
 	      {
-	        // extend:    'copyHtml5',
 	        text:      '<button class="btn btn-success btn-circle"><i class="fa fa-upload"></i></button>',
 	        titleAttr: 'Upload',
 		        action: function ( e, dt, node, config ) {
 		            $('#uploadFileModal').modal();
 		        }
+	      },
+	      {
+	        text:      '<button class="btn btn-success btn-circle"><i class="fa fa-plus"></i></button>',
+	        titleAttr: 'Create Folder',
+		        action: function ( e, dt, node, config ) {
+		            showAddFolder();
+		        }
 	      }
 		]
   });
   update_table();
+}
+
+function showAddFolder() {
+	$('#mkdir-footer').toggleClass('hidden');
 }
 
 function update_table() {
@@ -325,6 +330,7 @@ function handleMkdir(event) {
     event.preventDefault();
     var dirname = $("#mkdirname").val();
     inpherapi_auth_post('/mkdir', { dir: state.currentPath + "/"  + dirname }, update_table);
+    $('#mkdir-footer').toggleClass('hidden');
   }
 }
 
@@ -332,22 +338,36 @@ function handleMkdir(event) {
 $(function() {
   $("#mkdir-form").validator().submit(handleMkdir);
 
+	var dragging = 0;
   var obj = $(".dragandrophandler");
   obj.on('dragenter', function (e) {
+  	dragging++;
     e.stopPropagation();
     e.preventDefault();
-    obj.css('background-color', '#eeeee');
+    $('#dragandrophandler').removeClass('hidden');
+    console.log('dragenter');
   });
   obj.on('dragover', function (e) {
     e.stopPropagation();
     e.preventDefault();
   });
   obj.on('drop', function (e) {
+  	dragging = 0;
     e.preventDefault();
     var files = e.originalEvent.dataTransfer.files;
-
+    $('#dragandrophandler').addClass('hidden');
+    console.log('drop');
     //We need to send dropped files to Server
     handleFileUpload(files,obj);
+  });
+  obj.on('dragleave', function (e) {
+  	dragging--;
+    e.stopPropagation();
+    e.preventDefault();
+  	if (dragging === 0) {
+  		$('#dragandrophandler').addClass('hidden');
+  	}
+  	console.log('dragleave');
   });
   var doc = $(document);
   doc.on('dragenter', function (e) {

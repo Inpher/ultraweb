@@ -21,12 +21,12 @@
             <th>Actions</th>
           </tr>
         </thead>
-        <tfoot>
+        <tfoot id="mkdir-footer" class="hidden">
           <tr>
             <td colspan="4">
               <form id="mkdir-form" data-toggle="validator">
                 <div id="mkdir" class="input-group">
-                  <input id="mkdirname" type="text" class="form-control" placeholder="Create directory..." pattern="[^/]*" title="anything with no slashes" required>
+                  <input id="mkdirname" type="text" class="form-control" placeholder="Create a folder..." pattern="[^/]*" title="anything with no slashes" required>
                   <span class="input-group-btn">
                     <button id="mkdirbtn" class="btn
                     btn-success" type="submit">
@@ -39,7 +39,9 @@
         </tr>
       </tfoot>
     </table>
-    <div id="dragandrophandler"></div>
+    <div id="dragandrophandler" class="hidden">
+      <div class="overlay-message">Drop files here</div>
+    </div>
   </div>
 </div>
 </div>
