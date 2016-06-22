@@ -5,9 +5,9 @@ function updateListGroupsCallback(data, status) {
     sharingGroupNav.html('');
     ui.sharingGroupNavLi = {};
     for (var i = 0; i < data.length; i++) {
-	var a = $("<a>").text(data[i]);
-	var li = $("<li>").attr("data-group",data[i]).append(a);
-	sharingGroupNav.append(li);
+      var a = $("<a>").text(data[i]);
+      var li = $("<li>").attr("data-group",data[i]).append(a);
+      sharingGroupNav.append(li);
     }
 }
 
@@ -18,9 +18,10 @@ function updateListGroups(){
 function showPathInFileView(userOrGroupName) {
     showDiv('file-list-page');
     var lastPath=state.lastCurrentPath[userOrGroupName]; 
-    if (lastPath!==undefined)
-	return update_currentPath(lastPath);
-    update_currentPath('/'+userOrGroupName); 
+    if (lastPath!==undefined){
+      return update_currentPath(lastPath);
+    }
+    update_currentPath('/' + userOrGroupName); 
 }
 
 function handleListGroupsClick(event) {
@@ -32,10 +33,12 @@ function handleListGroupsClick(event) {
 }
 
 function hideUpload(){
+    $('.dt-buttons').hide();
     $("#dragandrophandler").hide();
 }
 
 function showUpload(){
+    $('.dt-buttons').show();
     $("#dragandrophandler").show();
 }
 
