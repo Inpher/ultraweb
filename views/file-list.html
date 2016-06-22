@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div id="file-list-page" class="dragandrophandler">
     <h1 class="panel-heading">
 		Filesystem View
@@ -41,5 +42,49 @@
 		    </table>
 		    <div id="dragandrophandler">Drag &amp; Drop Files Here</div>
 		</div>
+=======
+<div id="file-list-page">
+  <h1 class="panel-heading">
+    Filesystem View
+  </h1>
+  <!-- /.panel-heading -->
+  <div class="panel-body">
+    <div class="container-fluid">
+      <div class="row-fluid">
+        <ol class="breadcrumb" id="pathNav"></ol>
+      </div>
+>>>>>>> 08b7814ce0d1c25215f2a7abaa6dbfff13f521a4
     </div>
+    <br/>
+    <div class="dataTable_wrapper">
+      <table id="files" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Size</th>
+            <th>Groups Access</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tfoot>
+          <tr>
+            <td colspan="4">
+              <form id="mkdir-form" data-toggle="validator">
+                <div id="mkdir" class="input-group">
+                  <input id="mkdirname" type="text" class="form-control" placeholder="Create directory..." pattern="[^/]*" title="anything with no slashes" required>
+                  <span class="input-group-btn">
+                    <button id="mkdirbtn" class="btn
+                    btn-success" type="submit">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </span>
+              </div>
+            </form>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+    <div id="dragandrophandler">Drag &amp; Drop Files Here</div>
+  </div>
+</div>
 </div>

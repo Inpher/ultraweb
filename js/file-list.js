@@ -93,9 +93,10 @@ function inpherapiShareElement(path, group, shareName) {
     "shareName" : shareName,
   };
   inpherapi_auth_post("/shareElement", queryParam, function(data, status) {
-    if (status === "success") {
-      alert("success");
-    }
+    if(status === "success")
+            $('#alertContainer').bs_info("element shared succefully");
+    else 
+            $('#alertContainer').bs_alert(data);
   });
 }
 
@@ -116,8 +117,8 @@ function init_table() {
 
 function update_table() {
   inpherapi_list(state.currentPath, function(data, status) {
-    if (status !== "success") {
-      alert("errror " + status);
+    if (status !== "success"){
+              $('#alertContainer').bs_alert(data);
     }
     currentListData = data.list;
     var table = $('#files').dataTable();
@@ -290,15 +291,19 @@ function handleFileUpload(files,obj) {
 }
 
 function handleMkdir(event) {
-  event.stopPropagation();
-  event.preventDefault();
-  var dirname = $("#mkdirname").val();
-  inpherapi_auth_post('/mkdir', { dir: state.currentPath + "/"  + dirname }, update_table);
+  if (event.isDefaultPrevented()) {
+    // TODO: failure
+  } else {
+    event.stopPropagation();
+    event.preventDefault();
+    var dirname = $("#mkdirname").val();
+    inpherapi_auth_post('/mkdir', { dir: state.currentPath + "/"  + dirname }, update_table);
+  }
 }
 
 
 $(function() {
-  $("#mkdir-form").submit(handleMkdir);
+  $("#mkdir-form").validator().submit(handleMkdir);
 
   var obj = $(".dragandrophandler");
   obj.on('dragenter', function (e) {
