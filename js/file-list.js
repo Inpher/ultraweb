@@ -79,11 +79,16 @@ function download(path) {
 }
 
 function shareItem(path, group) {
+  ui.shareModal = {path: path, group: group};
   $('#createShareModal').modal("show");
-  $('#createShareSubmit').on("click", function(){
+}
+
+function handleShareItemFormSubmit(event) {
+    event.stopPropagation();
+    event.preventDefault();
     var shareName = $('#createShareName').val();
-    inpherapiShareElement(path, group, shareName);
-  })
+    $('#createShareModal').modal("hide");
+    inpherapiShareElement(ui.shareModal.path, ui.shareModal.group, shareName);
 }
 
 function inpherapiShareElement(path, group, shareName) {
@@ -337,6 +342,7 @@ function handleMkdir(event) {
 
 $(function() {
   $("#mkdir-form").validator().submit(handleMkdir);
+  $("#shareItemForm").submit(handleShareItemFormSubmit);
 
 	var dragging = 0;
   var obj = $(".dragandrophandler");
