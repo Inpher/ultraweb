@@ -48,7 +48,11 @@ function onFileTableClick(event) {
     if (t.is("tr")) break;
     if (t.is("table")) return;
     if (t.hasClass('delbtn')){
-      return delItem(t.attr('data-path'));
+      if (!t.hasClass('disabled')) {
+        t.addClass('disabled')
+        delItem(t.attr('data-path'));
+      }
+      return;
     }
     if (t.hasClass('shareItem')) {
       return shareItem(t.attr('data-path'), t.attr('data-group'));
@@ -100,7 +104,7 @@ function inpherapiShareElement(path, group, shareName) {
   inpherapi_auth_post("/shareElement", queryParam, function(data, status) {
     if(status === "success")
             $('#alertContainer').bs_info("element shared succefully");
-    else 
+    else
             $('#alertContainer').bs_alert(data);
   });
 }
