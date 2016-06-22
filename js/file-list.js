@@ -28,10 +28,6 @@ function update_path_nav() {
     var li = $('<li>').attr('data-path',aggregatedPath).text(pathFragments[i]);
     pathNav.append(li);
   }
-  pathNav.children().click(function() {
-    var path = $(this).attr("data-path");
-    update_currentPath(path);
-  });
 }
 
 function onPathNavClick(event) {
