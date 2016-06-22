@@ -300,18 +300,18 @@ function handleMkdir(event) {
 $(function() {
   $("#mkdir-form").submit(handleMkdir);
 
-  var obj = $("#dragandrophandler");
+  var obj = $(".dragandrophandler");
   obj.on('dragenter', function (e) {
     e.stopPropagation();
     e.preventDefault();
-    obj.css('border', '2px solid #0B85A1');
+    obj.css('border', '1px solid #0B85A1');
+    obj.css('background-color', '#eeeee');
   });
   obj.on('dragover', function (e) {
     e.stopPropagation();
     e.preventDefault();
   });
   obj.on('drop', function (e) {
-    obj.css('border', '2px dotted #0B85A1');
     e.preventDefault();
     var files = e.originalEvent.dataTransfer.files;
 
@@ -326,7 +326,6 @@ $(function() {
   doc.on('dragover', function (e) {
     e.stopPropagation();
     e.preventDefault();
-    obj.css('border', '2px dotted #0B85A1');
   });
   doc.on('drop', function (e) {
     e.stopPropagation();
