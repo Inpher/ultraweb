@@ -108,10 +108,37 @@ $(function () {
   init_table();
   $('#pathNav').click(onPathNavClick);
   $('#files').click(onFileTableClick);
+  $('#uploadFileModal').submit(fileUploadForm);
 });
 
+function fileUploadForm(e){
+	e.preventDefault();
+  e.stopPropagation();
+  var obj = $(".dragandrophandler");
+ 	handleFileUpload($('#uploadFileModal input[type=file]')[0].files, obj);
+ 	$('#uploadFileModal').modal('hide');
+}
+
 function init_table() {
-  $("#files").DataTable({'searching':false});
+  $("#files").DataTable({
+  	'searching':false,
+  	dom: 'Bfrtip',
+    lengthMenu: [
+        [ 10, 25, 50, -1 ],
+        [ '10 rows', '25 rows', '50 rows', 'Show all' ]
+    ],
+    buttons: [
+        'pageLength',
+	      {
+	        // extend:    'copyHtml5',
+	        text:      '<button class="btn btn-success btn-circle"><i class="fa fa-upload"></i></button>',
+	        titleAttr: 'Upload',
+		        action: function ( e, dt, node, config ) {
+		            $('#uploadFileModal').modal();
+		        }
+	      }
+		]
+  });
   update_table();
 }
 
@@ -309,7 +336,6 @@ $(function() {
   obj.on('dragenter', function (e) {
     e.stopPropagation();
     e.preventDefault();
-    obj.css('border', '1px solid #0B85A1');
     obj.css('background-color', '#eeeee');
   });
   obj.on('dragover', function (e) {

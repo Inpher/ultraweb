@@ -159,3 +159,9 @@
 .breadcrumb > li {
   cursor: pointer;
 }
+
+.dt-button~.dt-button, .dt-button~.dt-button:hover {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}

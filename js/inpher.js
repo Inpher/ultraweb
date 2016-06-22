@@ -188,16 +188,16 @@ $(function() {
         e.relatedTarget // previous active tab
     });
 
-   $('#login').click(function(event){
+   $('#loginForm').submit(function(event){
 	//login
 	inpherapi_login($('#usernameLogin').val(),$('#passwordLogin').val(), function (data) {
 		window.location ="list.html";
 	});
-
+    event.stopPropagation();
 	event.preventDefault(); // avoid to execute the actual submit of the form.
    });
 
-   $('#register').click(function(event){
+   $('#registerForm').submit(function(event){
 	//register
 	inpherapi_anon_post('/register',{username: $('#usernameRegister').val(), password: $('#passwordRegister').val()}, function (data) {
 		if(data.status != 'success'){
@@ -210,6 +210,7 @@ $(function() {
 		});
 	});
 
+    event.stopPropagation();
 	event.preventDefault(); // avoid to execute the actual submit of the form.
    });
    $('#logout').click(function(event){

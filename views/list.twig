@@ -5,6 +5,11 @@
 <script src="bower_components/datatables/media/js/jquery.dataTables.min.js"></script>
 <script src="bower_components/datatables-plugins/integration/bootstrap/3/dataTables.bootstrap.min.js"></script>
 <script src="bower_components/datatables-responsive/js/dataTables.responsive.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/1.2.1/js/dataTables.buttons.min.js"></script>
+
+<!-- CSS buttons datatable -->
+<link href="https://cdn.datatables.net/buttons/1.2.1/css/buttons.dataTables.min.css" rel="stylesheet">
+
 <script src="js/FileSaver.js"></script>
 <script src="js/file-list.js"></script>
 <script src="js/search.js"></script>
@@ -21,6 +26,7 @@
 	<div class="col-lg-12" id="main-container">
 	    {% include 'file-list.html'%}
 	    {% include 'search-div.html'%}
+	    {% include 'upload-modal.html'%}
 	</div>
     </div>
 </div>
