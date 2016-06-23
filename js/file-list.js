@@ -153,7 +153,8 @@ function init_table() {
 }
 
 function showAddFolder() {
-	$('#mkdir-footer').toggleClass('hidden');
+  $('#mkdir-footer').toggleClass('hidden');
+  $('#mkdirname').focus();
 }
 
 function update_table() {
