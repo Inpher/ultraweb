@@ -326,16 +326,14 @@ function createStatusbar(obj)
   };
 }
 
-function handleFileUpload(files,obj) {
-  for (var i = 0; i < files.length; i++) {
-    var fd = new FormData();
-    fd.append('content', files[i]);
-    fd.append('name', state.currentPath + '/' + files[i].name);
+function handleFileUpload(file, path, obj) {
+  var fd = new FormData();
+  fd.append('content', file);
+  fd.append('name', state.currentPath + '/' + path + file.name);
 
-    var status = new createStatusbar(obj); //Using this we can set progress.
-    status.setFileNameSize(files[i].name,files[i].size);
-    sendFileToServer(fd,status);
-  }
+  var status = new createStatusbar(obj); //Using this we can set progress.
+  status.setFileNameSize(file.name,file.size);
+  sendFileToServer(fd,status);
 }
 
 function handleMkdir(event) {
@@ -350,6 +348,32 @@ function handleMkdir(event) {
   }
 }
 
+function traverseFileTree(item, path) {
+  path = path || "";
+  if (item.isFile) {
+    // Get file
+    item.file(function(file) {
+      console.log("File:", path + file.name);
+      handleFileUpload(file, path, $("#dragandrophandler"));
+    });
+  } else if (item.isDirectory) {
+    // Get folder contents and mkdir
+    var dirname = item.name
+    console.log("Dir:", item.name);
+    inpherapi_auth_post('/mkdir', { dir: state.currentPath + "/"  + path + dirname}, recurse(item,path));
+  }
+}
+
+var recurse = function(item,path) {
+  return function(data, textStatus, jqXHR) {
+    var dirReader = item.createReader();
+    dirReader.readEntries(function(entries) {
+      for (var i=0; i<entries.length; i++) {
+        traverseFileTree(entries[i], path + item.name + "/");
+      }
+    });
+  };
+}
 
 $(function() {
   $("#mkdir-form").validator().submit(handleMkdir);
@@ -373,11 +397,16 @@ $(function() {
   obj.on('drop', function (e) {
   	dragging = 0;
     e.preventDefault();
-    var files = e.originalEvent.dataTransfer.files;
     $('#dragandrophandler').addClass('hidden');
     console.log('drop');
-    //We need to send dropped files to Server
-    handleFileUpload(files, $('#file-list-page'));
+    var items = e.originalEvent.dataTransfer.items;
+    for (var i=0; i<items.length; i++) {
+    // webkitGetAsEntry is where the magic happens
+      var item = items[i].webkitGetAsEntry();
+      if (item) {
+        traverseFileTree(item);
+      }
+    }
   });
   obj.on('dragleave', function (e) {
   	dragging--;
