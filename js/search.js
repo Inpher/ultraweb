@@ -41,7 +41,10 @@ function inpherapi_search() {
 		var table = $('#searchResults').dataTable();
 		table.fnClearTable();
 		if (data.totalHits > 0) {
+			$('.searchdata_wrapper').show();
 			table.fnAddData(data.results.map(inpherapi_search_res_to_row));
+		} else {
+			$('#noResults').show();
 		}
 	});
 };

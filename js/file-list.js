@@ -25,13 +25,13 @@ function update_path_nav() {
   pathNav.html('');
   for(var i = 1; i < pathFragments.length; i++) {
     aggregatedPath += "/" + pathFragments[i];
-    var li = $('<li>').attr('data-path',aggregatedPath).text(pathFragments[i]);
+
+    // var li = $('<li>').attr('data-path',aggregatedPath).text(pathFragments[i]);
+    var a = $('<a>').text(pathFragments[i]).attr('href', '#');
+    var li = $('<li>').attr('data-path', aggregatedPath);
+    li.append(a);
     pathNav.append(li);
   }
-  pathNav.children().click(function() {
-    var path = $(this).attr("data-path");
-    update_currentPath(path);
-  });
 }
 
 function onPathNavClick(event) {
@@ -48,7 +48,11 @@ function onFileTableClick(event) {
     if (t.is("tr")) break;
     if (t.is("table")) return;
     if (t.hasClass('delbtn')){
-      return delItem(t.attr('data-path'));
+      if (!t.hasClass('disabled')) {
+        t.addClass('disabled')
+        delItem(t.attr('data-path'));
+      }
+      return;
     }
     if (t.hasClass('shareItem')) {
       return shareItem(t.attr('data-path'), t.attr('data-group'));
@@ -74,16 +78,21 @@ function download(path) {
   inpherapi_auth_get("/download", {fileName: path}, function(data, status, request){
     console.log(request);
     var blob = new Blob([data], {type: "txt"});
-    saveAs(blob, "file.txt");
+    saveAs(blob, path.substring(path.lastIndexOf("/") + 1, path.length));
   })
 }
 
 function shareItem(path, group) {
+  ui.shareModal = {path: path, group: group};
   $('#createShareModal').modal("show");
-  $('#createShareSubmit').on("click", function(){
+}
+
+function handleShareItemFormSubmit(event) {
+    event.stopPropagation();
+    event.preventDefault();
     var shareName = $('#createShareName').val();
-    inpherapiShareElement(path, group, shareName);
-  })
+    $('#createShareModal').modal("hide");
+    inpherapiShareElement(ui.shareModal.path, ui.shareModal.group, shareName);
 }
 
 function inpherapiShareElement(path, group, shareName) {
@@ -93,9 +102,10 @@ function inpherapiShareElement(path, group, shareName) {
     "shareName" : shareName,
   };
   inpherapi_auth_post("/shareElement", queryParam, function(data, status) {
-    if (status === "success") {
-      alert("success");
-    }
+    if(status === "success")
+            $('#alertContainer').bs_info("element shared succefully");
+    else
+            $('#alertContainer').bs_alert(data);
   });
 }
 
@@ -107,17 +117,52 @@ $(function () {
   init_table();
   $('#pathNav').click(onPathNavClick);
   $('#files').click(onFileTableClick);
+  $('#uploadFileModal').submit(fileUploadForm);
 });
 
+function fileUploadForm(e){
+	e.preventDefault();
+  e.stopPropagation();
+  var obj = $('#file-list-page');
+ 	handleFileUpload($('#uploadFileModal input[type=file]')[0].files, obj);
+ 	$('#uploadFileModal').modal('hide');
+}
+
 function init_table() {
-  $("#files").DataTable({'searching':false});
+  $("#files").DataTable({
+  	'searching':false,
+  	dom: 'Bfrtip',
+    buttons: [
+	      {
+	        text:      '<button class="btn btn-success btn-circle"><i class="fa fa-upload"></i></button>',
+	        titleAttr: 'Upload',
+		        action: function ( e, dt, node, config ) {
+		            $('#uploadFileModal').modal();
+		        }
+	      },
+	      {
+	        text:      '<button class="btn btn-success btn-circle"><i class="fa fa-plus"></i></button>',
+	        titleAttr: 'Create Folder',
+		        action: function ( e, dt, node, config ) {
+		            showAddFolder();
+		        }
+	      }
+		]
+  });
   update_table();
+}
+
+function showAddFolder() {
+  $('#mkdir-footer').toggleClass('hidden');
+  var mkdirName = $('#mkdirname');
+  mkdirName.val("");
+  mkdirName.focus();
 }
 
 function update_table() {
   inpherapi_list(state.currentPath, function(data, status) {
-    if (status !== "success") {
-      alert("errror " + status);
+    if (status !== "success"){
+              $('#alertContainer').bs_alert(data);
     }
     currentListData = data.list;
     var table = $('#files').dataTable();
@@ -246,7 +291,7 @@ function createStatusbar(obj)
   this.size = $("<div class='filesize'></div>").appendTo(this.statusbar);
   this.progressBar = $("<div class='progressBar'><div></div></div>").appendTo(this.statusbar);
   this.abort = $("<div class='abort'>Abort</div>").appendTo(this.statusbar);
-  obj.after(this.statusbar);
+  obj.append(this.statusbar);
 
   this.setFileNameSize = function(name,size) {
     var sizeStr="";
@@ -288,10 +333,15 @@ function handleFileUpload(file, path, obj) {
 }
 
 function handleMkdir(event) {
-  event.stopPropagation();
-  event.preventDefault();
-  var dirname = $("#mkdirname").val();
-  inpherapi_auth_post('/mkdir', { dir: state.currentPath + "/"  + dirname }, update_table);
+  if (event.isDefaultPrevented()) {
+    // TODO: failure
+  } else {
+    event.stopPropagation();
+    event.preventDefault();
+    var dirname = $("#mkdirname").val();
+    inpherapi_auth_post('/mkdir', { dir: state.currentPath + "/"  + dirname }, update_table);
+    $('#mkdir-footer').toggleClass('hidden');
+  }
 }
 
 function traverseFileTree(item, path) {
@@ -322,33 +372,46 @@ var recurse = function(item,path) {
 }
 
 $(function() {
-  $("#mkdir-form").submit(handleMkdir);
+  $("#mkdir-form").validator().submit(handleMkdir);
+  $("#shareItemForm").submit(handleShareItemFormSubmit);
 
-  var obj = $("#dragandrophandler");
+	var dragging = 0;
+  var obj = $(".dragandrophandler");
   obj.on('dragenter', function (e) {
+  	dragging++;
     e.stopPropagation();
     e.preventDefault();
-    obj.css('border', '2px solid #0B85A1');
+    $('#dragandrophandler').removeClass('hidden');
+    $('#uploadFileModal').modal('hide');
+    console.log('dragenter');
   });
   obj.on('dragover', function (e) {
     e.stopPropagation();
     e.preventDefault();
+    $('#uploadFileModal').modal('hide');
   });
   obj.on('drop', function (e) {
-    obj.css('border', '2px dotted #0B85A1');
+  	dragging = 0;
     e.preventDefault();
-    var files = e.originalEvent.dataTransfer.files;
-
-    //We need to send dropped files to Server
-    //handleFileUpload(files,obj);
+    $('#dragandrophandler').addClass('hidden');
+    console.log('drop');
     var items = e.originalEvent.dataTransfer.items;
     for (var i=0; i<items.length; i++) {
     // webkitGetAsEntry is where the magic happens
       var item = items[i].webkitGetAsEntry();
       if (item) {
-        traverseFileTree(item,'',obj);
+        traverseFileTree(item);
       }
     }
+  });
+  obj.on('dragleave', function (e) {
+  	dragging--;
+    e.stopPropagation();
+    e.preventDefault();
+  	if (dragging === 0) {
+  		$('#dragandrophandler').addClass('hidden');
+  	}
+  	console.log('dragleave');
   });
   var doc = $(document);
   doc.on('dragenter', function (e) {
@@ -358,7 +421,6 @@ $(function() {
   doc.on('dragover', function (e) {
     e.stopPropagation();
     e.preventDefault();
-    obj.css('border', '2px dotted #0B85A1');
   });
   doc.on('drop', function (e) {
     e.stopPropagation();

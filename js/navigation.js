@@ -5,9 +5,9 @@ function updateListGroupsCallback(data, status) {
     sharingGroupNav.html('');
     ui.sharingGroupNavLi = {};
     for (var i = 0; i < data.length; i++) {
-	var a = $("<a>").text(data[i]);
-	var li = $("<li>").attr("data-group",data[i]).append(a);
-	sharingGroupNav.append(li);
+      var a = $("<a>").text(data[i]);
+      var li = $("<li>").attr("data-group",data[i]).append(a);
+      sharingGroupNav.append(li);
     }
 }
 
@@ -18,34 +18,45 @@ function updateListGroups(){
 function showPathInFileView(userOrGroupName) {
     showDiv('file-list-page');
     var lastPath=state.lastCurrentPath[userOrGroupName]; 
-    if (lastPath!==undefined)
-	return update_currentPath(lastPath);
-    update_currentPath('/'+userOrGroupName); 
+    if (lastPath!==undefined){
+      return update_currentPath(lastPath);
+    }
+    update_currentPath('/' + userOrGroupName); 
 }
 
 function handleListGroupsClick(event) {
     var li = $(event.target).closest('li[data-group]',this);
     if (li.length==0) return console.log("we didn't click on a group name");
     var groupName = li.attr('data-group');
+    activateNavTab(event);
     hideUpload();
     showPathInFileView(groupName);
 }
 
 function hideUpload(){
+    $('.dt-buttons').hide();
     $("#dragandrophandler").hide();
 }
 
 function showUpload(){
+    $('.dt-buttons').show();
     $("#dragandrophandler").show();
 }
 
+
 function handleNavListUserDir(event) {
+    activateNavTab(event);
     showUpload();
     showPathInFileView(state.username);
+}
+function activateNavTab(event){
+  $('#side-menu li > a.active').removeClass('active');
+  $(event.target).addClass('active');
 }
 
 function handleNavListSearchClick(event) {
     showDiv('search-page');
+    activateNavTab(event);
 }
 
 function handleCreateSharingGroupSubmit(event) {

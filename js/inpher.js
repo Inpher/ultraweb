@@ -114,10 +114,6 @@ function inpherapi_login(username, password, callback) {
     sessionStorage.removeItem('auth_token');
     return inpherapi_anon_post('/login',{username:username,password:password},next);
     function next(data) {
-
-    $('#login').attr("disabled", false);
-    $('#register').attr("disabled", false);
-
 	sessionStorage.setItem('username',data.username);
 	sessionStorage.setItem('auth_token',data.auth_token);
 	if (callback!==undefined) return callback(data);
@@ -182,33 +178,39 @@ function inpherapi_createSharingGroup(name, usersList, callback){
 
 
 $(function() {
-   $('#login').click(function(event){
-    $('#login').attr("disabled", true);
-    $('#register').attr("disabled", true);
+
+    $('#registerTgl').on('shown.bs.tab', function (e) {
+        $('#usernameRegister').focus();
+        $('#registerForm').validator();
+    });
+
+    $('#loginTgl').on('shown.bs.tab', function (e) {
+      $('#usernameLogin').focus();
+    })
+
+   $('#loginForm').submit(function(event){
 	//login
-	inpherapi_login($('#username').val(),$('#password').val(), function (data) {
+	inpherapi_login($('#usernameLogin').val(),$('#passwordLogin').val(), function (data) {
 		window.location ="list.html";
 	});
-
+    event.stopPropagation();
 	event.preventDefault(); // avoid to execute the actual submit of the form.
    });
 
-   $('#register').click(function(event){
-
-    $('#login').attr("disabled", true);
-    $('#register').attr("disabled", true);
+   $('#registerForm').submit(function(event){
 	//register
-	inpherapi_anon_post('/register',{username: $('#username').val(), password: $('#password').val()}, function (data) {
+	inpherapi_anon_post('/register',{username: $('#usernameRegister').val(), password: $('#passwordRegister').val()}, function (data) {
 		if(data.status != 'success'){
             $('#alertContainer').bs_alert(data);
 		}
 
         // login
-		inpherapi_login($('#username').val(),$('#password').val(), function (data) {
+		inpherapi_login($('#usernameRegister').val(),$('#passwordRegister').val(), function (data) {
 			window.location ="list.html";
 		});
 	});
 
+    event.stopPropagation();
 	event.preventDefault(); // avoid to execute the actual submit of the form.
    });
    $('#logout').click(function(event){
