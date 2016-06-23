@@ -28,6 +28,7 @@ function handleListGroupsClick(event) {
     var li = $(event.target).closest('li[data-group]',this);
     if (li.length==0) return console.log("we didn't click on a group name");
     var groupName = li.attr('data-group');
+    activateNavTab(event);
     hideUpload();
     showPathInFileView(groupName);
 }
@@ -42,13 +43,20 @@ function showUpload(){
     $("#dragandrophandler").show();
 }
 
+
 function handleNavListUserDir(event) {
+    activateNavTab(event);
     showUpload();
     showPathInFileView(state.username);
+}
+function activateNavTab(event){
+  $('#side-menu li > a.active').removeClass('active');
+  $(event.target).addClass('active');
 }
 
 function handleNavListSearchClick(event) {
     showDiv('search-page');
+    activateNavTab(event);
 }
 
 function handleCreateSharingGroupSubmit(event) {

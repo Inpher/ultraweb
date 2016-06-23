@@ -78,7 +78,7 @@ function download(path) {
   inpherapi_auth_get("/download", {fileName: path}, function(data, status, request){
     console.log(request);
     var blob = new Blob([data], {type: "txt"});
-    saveAs(blob, "file.txt");
+    saveAs(blob, path.substring(path.lastIndexOf("/") + 1, path.length));
   })
 }
 
@@ -291,7 +291,7 @@ function createStatusbar(obj)
   this.size = $("<div class='filesize'></div>").appendTo(this.statusbar);
   this.progressBar = $("<div class='progressBar'><div></div></div>").appendTo(this.statusbar);
   this.abort = $("<div class='abort'>Abort</div>").appendTo(this.statusbar);
-  obj.after(this.statusbar);
+  obj.append(this.statusbar);
 
   this.setFileNameSize = function(name,size) {
     var sizeStr="";
