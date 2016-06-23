@@ -154,7 +154,9 @@ function init_table() {
 
 function showAddFolder() {
   $('#mkdir-footer').toggleClass('hidden');
-  $('#mkdirname').focus();
+  var mkdirName = $('#mkdirname');
+  mkdirName.val("");
+  mkdirName.focus();
 }
 
 function update_table() {
