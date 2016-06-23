@@ -123,8 +123,8 @@ $(function () {
 function fileUploadForm(e){
 	e.preventDefault();
   e.stopPropagation();
-  var obj = $('#file-list-page');
- 	handleFileUpload($('#uploadFileModal input[type=file]')[0].files, obj);
+  var obj = $('#dragandrophandler');
+ 	handleFileUpload($('#uploadFileModal input[type=file]')[0].files, '/' , obj);
  	$('#uploadFileModal').modal('hide');
 }
 
@@ -322,15 +322,16 @@ function createStatusbar(obj)
   };
 }
 
-function handleFileUpload(file, path, obj) {
-  var fd = new FormData();
-  fd.append('content', file);
-  fd.append('name', state.currentPath + '/' + path + file.name);
-
-  var status = new createStatusbar(obj); //Using this we can set progress.
-  status.setFileNameSize(file.name,file.size);
-  sendFileToServer(fd,status);
-}
+function handleFileUpload(files, path, obj) {
+  for (var i = 0; i < files.length; i++) {
+    var fd = new FormData();
+    fd.append('content', files[i]);
+    fd.append('name', state.currentPath + '/' + path + files[i].name);
+    var status = new createStatusbar(obj);
+    status.setFileNameSize(files[i].name,files[i].size);
+    sendFileToServer(fd,status);
+  }
+ }
 
 function handleMkdir(event) {
   if (event.isDefaultPrevented()) {
@@ -350,7 +351,7 @@ function traverseFileTree(item, path) {
     // Get file
     item.file(function(file) {
       console.log("File:", path + file.name);
-      handleFileUpload(file, path, $("#dragandrophandler"));
+      handleFileUpload([file], path, $("#dragandrophandler"));
     });
   } else if (item.isDirectory) {
     // Get folder contents and mkdir
