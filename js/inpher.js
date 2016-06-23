@@ -180,8 +180,13 @@ function inpherapi_createSharingGroup(name, usersList, callback){
 $(function() {
 
     $('#registerTgl').on('shown.bs.tab', function (e) {
+        $('#usernameRegister').focus();
         $('#registerForm').validator();
     });
+
+    $('#loginTgl').on('shown.bs.tab', function (e) {
+      $('#usernameLogin').focus();
+    })
 
    $('#loginForm').submit(function(event){
 	//login

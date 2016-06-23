@@ -9,7 +9,7 @@
 
 			<!-- Nav tabs -->
 			<ul class="nav nav-tabs" role="tablist">
-				<li role="presentation" class="active" ><a href="#loginTab" aria-controls="loginTab" role="tab" data-toggle="tab">Login</a></li>
+				<li role="presentation" class="active" ><a href="#loginTab" id="loginTgl" aria-controls="loginTab" role="tab" data-toggle="tab">Login</a></li>
 				<li role="presentation" ><a href="#registerTab" id="registerTgl" aria-controls="profile" role="tab" data-toggle="tab">Register</a></li>
 			</ul>
 
@@ -21,7 +21,7 @@
 						    <h2>Please Login</h2>
 						    <hr class="colorgraph">
 						    <div class="form-group has-feedback">
-								<input type="text" name="usernameLogin" pattern="^[_A-z0-9]{1,}$" id="usernameLogin" required class="form-control input-lg" data-error="Please fill out your username" placeholder="Username">
+								<input type="text" name="usernameLogin" pattern="^[_A-z0-9]{1,}$" id="usernameLogin" required class="form-control input-lg" data-error="Please fill out your username" placeholder="Username" autofocus>
 								<div class="help-block with-errors"></div>
 						    </div>
 						    <div class="form-group has-feedback">
