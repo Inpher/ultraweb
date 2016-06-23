@@ -77,7 +77,11 @@ function onFileTableClick(event) {
 function download(path) {
   inpherapi_auth_get("/download", {fileName: path}, function(data, status, request){
     console.log(request);
-    var blob = new Blob([data], {type: "txt"});
+    var blob = new Blob([data], {type:"application/pdf"});
+    // var link=document.createElement('a');
+    // link.href=window.URL.createObjectURL(blob);
+    // link.download=path.substring(path.lastIndexOf("/") + 1, path.length);
+    // link.click();
     saveAs(blob, path.substring(path.lastIndexOf("/") + 1, path.length));
   })
 }
