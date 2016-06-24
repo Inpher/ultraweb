@@ -36,6 +36,7 @@
     "datatables-responsive": "1.0.6",
     "bootstrap-social": "~4.8.0",
     "flot.tooltip": "~0.8.4",
-    "bootstrap-validator": "~0.10.2"
+    "bootstrap-validator": "~0.10.2",
+    "jquery-binary-transport": "https://github.com/henrya/js-jquery.git"
   }
 }
