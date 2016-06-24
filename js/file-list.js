@@ -123,7 +123,7 @@ $(function () {
 function fileUploadForm(e){
 	e.preventDefault();
   e.stopPropagation();
-  var obj = $('#dragandrophandler');
+  var obj = $('#file-list-page');
  	handleFileUpload($('#uploadFileModal input[type=file]')[0].files, '/' , obj);
  	$('#uploadFileModal').modal('hide');
 }
@@ -351,7 +351,7 @@ function traverseFileTree(item, path) {
     // Get file
     item.file(function(file) {
       console.log("File:", path + file.name);
-      handleFileUpload([file], path, $("#dragandrophandler"));
+      handleFileUpload([file], path, $('#file-list-page'));
     });
   } else if (item.isDirectory) {
     // Get folder contents and mkdir
