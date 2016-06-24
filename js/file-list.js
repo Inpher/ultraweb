@@ -75,15 +75,16 @@ function onFileTableClick(event) {
 }
 
 function download(path) {
+  var options = {
+    dataType: 'binary'
+  };
   inpherapi_auth_get("/download", {fileName: path}, function(data, status, request){
     console.log(request);
-    var blob = new Blob([data], {type:"application/pdf"});
-    // var link=document.createElement('a');
-    // link.href=window.URL.createObjectURL(blob);
-    // link.download=path.substring(path.lastIndexOf("/") + 1, path.length);
-    // link.click();
-    saveAs(blob, path.substring(path.lastIndexOf("/") + 1, path.length));
-  })
+    var link=document.createElement('a');
+    link.href=window.URL.createObjectURL(data);
+    link.download=path.substring(path.lastIndexOf("/") + 1, path.length);
+    link.click();
+  }, options);
 }
 
 function shareItem(path, group) {
@@ -195,6 +196,9 @@ function inpherapi_list_res_to_row(a, i) {
   var delbtn = $('<button type="button" class="btn btn-danger btn-circle delbtn"><i class="fa fa-trash-o"></i></button>');
   delbtn.attr('data-path', a.path);
   return [
+    // outerHTML($("<a>").attr('href', "javascript:void(0)").attr("onclick", "window.href=" + INPHER_REST_URL 
+      // +"/download/?fileName="+ a.path).text(a.path)),
+      //'<a href="javascript:void(0)" onclick = "window.href='+ INPHER_REST_URL +"/download/INPHER_REST_URL?fileName="+ a.path + '>download</a>'),
     outerHTML(fsElementIconAndNameHtml(a.type, a.path, i)),
     a.size,
     a.groups,
