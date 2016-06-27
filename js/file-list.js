@@ -61,6 +61,9 @@ function onFileTableClick(event) {
       return;
     }
     t = t.parent();
+    if(t.length == 0) { 
+      return;
+    }
   }
   if (!t.parent().is("tbody")) {
     return;
