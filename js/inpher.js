@@ -36,6 +36,7 @@ function inpherapi_auth_ajax(path, callback, options) {
     options.headers.auth_token=sessionStorage.getItem('auth_token');
     if (!options.headers.auth_token) return print_error('Not Logged In!');
     opt.url = INPHER_REST_URL + path;
+    opt.cache = false;
     console.log("Sending Ajax Request: ",opt);
     $.ajax(opt).done(callback).fail(print_error);
 }
