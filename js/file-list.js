@@ -230,7 +230,7 @@ function fsElementTypeHtmlIcon(elementType) {
 
 function createShareElementButton(path) {
   var dropdown = $("<div>").attr("class", "dropdown");
-  var button = $("<button>").attr("class", "btn btn-primary btn-circle").attr("type", "button").attr("data-toggle", "dropdown");
+  var button = $("<button>").attr("class", "btn btn-success btn-circle").attr("type", "button").attr("data-toggle", "dropdown");
   button.append('<i class="fa fa-share"/>')
   dropdown.append(button);
   var listHtml = $("<ul class='dropdown-menu'/>");
