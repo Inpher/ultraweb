@@ -25,7 +25,8 @@ $(function () {
   });
 	var table = $('#searchResults').DataTable({
 		'searching':false,  
-		"bRetrieve":true 
+		'bRetrieve':true,
+		'bPaginate':false
 	});
 });
 
@@ -40,11 +41,13 @@ function inpherapi_search() {
 	inpherapi_auth_post("/search", {query: words}, function(data){
 		var table = $('#searchResults').dataTable();
 		table.fnClearTable();
+		$('#noResults').hide();
 		if (data.totalHits > 0) {
 			$('.searchdata_wrapper').show();
 			table.fnAddData(data.results.map(inpherapi_search_res_to_row));
 		} else {
 			$('#noResults').show();
+			$('.searchdata_wrapper').hide();
 		}
 	});
 };

@@ -1,37 +1,32 @@
 <div id="search-page">
     <h1 class="panel-heading">
-	Search
+		Search
     </h1>
     <!-- /.panel-heading -->
     <div class="panel-body">
-		<div class="container-fluid">
-			<div class="row-fluid">
-				 <form id="search-form">
-			         <div id="search" class="input-group">
-				    <input id="keywords" type="text" class="form-control" placeholder="Search">
-				    <span class="input-group-btn">
-					<button id="searchbtn" class="btn
-					btn-success" type="submit">
+		<form id="search-form">
+	        <div id="search" class="input-group">
+			    <input id="keywords" type="text" class="form-control" placeholder="Search">
+			    <span class="input-group-btn">
+					<button id="searchbtn" class="btn btn-success" type="submit">
 					    <i class="fa fa-search"></i>
 					</button>
-				    </span>
-				</div>
-				 </form>
+			    </span>
 			</div>
-			<br/>
+		 </form>
+		<br/>
+		<div id="noResults" style="display:none;">No results were found. Please try again.</div>
+		<br/>
 
-			<div id="noResults" style="display:none;">No results were found. Please try again.</div>
-
-			<div class="dataTable_wrapper searchdata_wrapper" style="display:none;" >
-			    <table id="searchResults" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
-					<thead>
-					    <tr>
-							<th>Full Path</th>
-							<th>Score</th>
-					    </tr>
-					</thead>
-			    </table>
-			</div>
-	    </div>
+		<div class="dataTable_wrapper searchdata_wrapper" style="display:none;" >
+		    <table id="searchResults" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+				<thead>
+				    <tr>
+						<th>Full Path</th>
+						<th>Score</th>
+				    </tr>
+				</thead>
+		    </table>
+		</div>
     </div>
 </div>
