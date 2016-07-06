@@ -1,5 +1,5 @@
 h1, h2, h3, h4, h5, h6 {
-  font-family: Myriad Pro !important;
+  /*font-family: Myriad Pro !important;*/
 }
 html, body{
   height: 100%;
@@ -11,11 +11,11 @@ html, body{
 }
 
 .btn-success,
-.pagination>.active>a, 
-.pagination>.active>a:focus, 
-.pagination>.active>a:hover, 
-.pagination>.active>span, 
-.pagination>.active>span:focus, 
+.pagination>.active>a,
+.pagination>.active>a:focus,
+.pagination>.active>a:hover,
+.pagination>.active>span,
+.pagination>.active>span:focus,
 .pagination>.active>span:hover {
   background-color: #99BC82;
   border-color: #8bb371;
@@ -24,11 +24,11 @@ html, body{
 .btn-success:hover,
 .btn-success:active,
 .btn-success:focus,
-.btn-success.active.focus, 
-.btn-success.active:focus, 
-.btn-success.active:hover, 
-.btn-success:active.focus, 
-.btn-success:active:focus, 
+.btn-success.active.focus,
+.btn-success.active:focus,
+.btn-success.active:hover,
+.btn-success:active.focus,
+.btn-success:active:focus,
 .btn-success:active:hover {
   background-color: #7eaa61;
 }
@@ -40,6 +40,11 @@ html, body{
 
 #landingPage {
   padding-top: 50px;
+}
+
+#logo-img {
+  margin-top: 40px;
+  height: 190px;
 }
 
 @media(max-width:768px) {
@@ -62,55 +67,55 @@ html, body{
   width: 50%;
 }
 
-#landingPage .nav-tabs { 
-  border-bottom: 2px solid #DDD; 
+#landingPage .nav-tabs {
+  border-bottom: 2px solid #DDD;
 }
 
-#landingPage .nav-tabs > li.active > a, 
-#landingPage .nav-tabs > li.active > a:focus, 
-#landingPage .nav-tabs > li.active > a:hover { 
-  border-width: 0; 
+#landingPage .nav-tabs > li.active > a,
+#landingPage .nav-tabs > li.active > a:focus,
+#landingPage .nav-tabs > li.active > a:hover {
+  border-width: 0;
 }
 
-#landingPage .nav-tabs > li > a { 
+#landingPage .nav-tabs > li > a {
   border: none; color: #fff;
-  text-align: center; 
+  text-align: center;
 }
 
-#landingPage .nav-tabs > li.active > a, 
-#landingPage .nav-tabs > li > a:hover { 
-  border: none; color: #99BC82 !important; 
+#landingPage .nav-tabs > li.active > a,
+#landingPage .nav-tabs > li > a:hover {
+  border: none; color: #99BC82 !important;
   background: transparent;
 }
 
-#landingPage .nav-tabs > li > a::after { 
-  content: ""; 
-  background: #99BC82; 
-  height: 2px; 
-  position: absolute; 
-  width: 100%; 
-  left: 0px; 
-  bottom: -1px; 
-  transition: all 250ms ease 0s; 
-  transform: scale(0); 
+#landingPage .nav-tabs > li > a::after {
+  content: "";
+  background: #99BC82;
+  height: 2px;
+  position: absolute;
+  width: 100%;
+  left: 0px;
+  bottom: -1px;
+  transition: all 250ms ease 0s;
+  transform: scale(0);
 }
 
-#landingPage .nav-tabs > li.active > a::after, 
-#landingPage .nav-tabs > li:hover > a::after { 
-  transform: scale(1); 
+#landingPage .nav-tabs > li.active > a::after,
+#landingPage .nav-tabs > li:hover > a::after {
+  transform: scale(1);
 }
 
-#landingPage .tab-nav > li > a::after { 
-  background: #21527d none repeat scroll 0% 0%; 
-  color: #fff; 
+#landingPage .tab-nav > li > a::after {
+  background: #21527d none repeat scroll 0% 0%;
+  color: #fff;
 }
 
-#landingPage .tab-pane { 
-  padding: 15px 0; 
+#landingPage .tab-pane {
+  padding: 15px 0;
 }
 
 #landingPage .tab-content{
-  padding:20px
+  /*padding:20px*/
 }
 /* Login/Register Tabs end*/
 
@@ -134,7 +139,7 @@ html, body{
   text-align: center;
   line-height: 22px;
   width: 0;
-  background-color: #414042; 
+  background-color: #414042;
   border-radius: 3px;
 }
 
@@ -251,7 +256,7 @@ html, body{
   cursor: pointer;
   color: #fff;
 }
-.nav>li>a:focus, 
+.nav>li>a:focus,
 .nav>li>a:hover {
   background-color: inherit;
   color: #888;
@@ -294,7 +299,7 @@ html, body{
 
 .overlay-message {
     position: fixed;
-    top: 50%; left: 45%; 
+    top: 50%; left: 45%;
     font-size: 200%;
     opacity:1;
     z-index:1002;
@@ -306,45 +311,45 @@ html, body{
 .breadcrumb {
   padding: 0px;
   background: #D4D4D4;
-  list-style: none; 
+  list-style: none;
   overflow: hidden;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 .breadcrumb>li+li:before {
   padding: 0;
   content: "";
 }
-.breadcrumb li { 
-  float: left; 
+.breadcrumb li {
+  float: left;
 }
 .breadcrumb li:last-of-type a {
   background: green;                   /* fallback color */
-  background: #99BC82 ; 
+  background: #99BC82 ;
 }
 .breadcrumb li.completed a {
   background: brown;                   /* fallback color */
-  background: hsla(153, 57%, 51%, 1); 
+  background: hsla(153, 57%, 51%, 1);
 }
 .breadcrumb li:last-of-type a:after {
   border-left: 30px solid #99BC82 ;
 }
 .breadcrumb li.completed a:after {
   border-left: 30px solid hsla(153, 57%, 51%, 1);
-} 
+}
 
 .breadcrumb li a {
   color: white;
-  text-decoration: none; 
+  text-decoration: none;
   padding: 10px 0 10px 30px;
-  position: relative; 
+  position: relative;
   display: block;
   float: left;
 }
 
-.breadcrumb li a:after { 
-  content: " "; 
-  display: block; 
-  width: 0; 
+.breadcrumb li a:after {
+  content: " ";
+  display: block;
+  width: 0;
   height: 0;
   border-top: 20px solid transparent;           /* Go big on the size, and let overflow hide */
   border-bottom: 20px solid transparent;
@@ -353,12 +358,12 @@ html, body{
   top: 0;
   /*margin-top: -50px; */
   left: 100%;
-  z-index: 2; 
-} 
-.breadcrumb li a:before { 
-  content: " "; 
-  display: block; 
-  width: 0; 
+  z-index: 2;
+}
+.breadcrumb li a:before {
+  content: " ";
+  display: block;
+  width: 0;
   height: 0;
   border-top: 20px solid transparent;           /* Go big on the size, and let overflow hide */
   border-bottom: 20px solid transparent;
@@ -368,16 +373,16 @@ html, body{
   /*margin-top: -50px; */
   margin-left: 1px;
   left: 100%;
-  z-index: 1; 
-} 
+  z-index: 1;
+}
 .breadcrumb li:first-child a {
   padding-left: 15px;
 }
-.breadcrumb li a:hover { 
-  background: #7eaa61; 
+.breadcrumb li a:hover {
+  background: #7eaa61;
 }
-.breadcrumb li a:hover:after { 
-  border-left-color: #7eaa61 !important; 
+.breadcrumb li a:hover:after {
+  border-left-color: #7eaa61 !important;
 }
 /* breadcrums magic over */
 
@@ -407,7 +412,7 @@ html, body{
 }
 .navbar-default.sidebar .nav > li > a.active {
   color: #ffffff;
-  background-color: #99BC82;  
+  background-color: #99BC82;
 }
 .navbar-default.sidebar .nav > li > a.active:hover,
 .navbar-default.sidebar .nav > li > a.active:focus {
@@ -457,3 +462,8 @@ html, body{
 }
 
 /*side navbar over*/
+
+/*top sidebar stuff*/
+#sign-out {
+  color: #D1D3D4;
+}

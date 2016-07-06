@@ -5,7 +5,7 @@
  */
 
 body {
-    background-color: #455566;
+    background-color: #D1D3D4;
 }
 
 #wrapper {
@@ -38,7 +38,7 @@ body {
 }
 
 .navbar-top-links {
-    margin-right: 0;
+    margin-right: 20px;
 }
 
 .navbar-top-links li {
@@ -97,7 +97,7 @@ body {
 
 .navbar-static-top {
     border: none;
-    background-color: #455566;
+    background-color: #D1D3D4;
 }
 
 .sidebar .sidebar-nav.navbar-collapse {
@@ -312,6 +312,10 @@ table.dataTable thead .sorting:after {
 
 .huge {
     font-size: 40px;
+}
+
+.panel-body {
+    padding-top: 0px;
 }
 
 .panel-green {
