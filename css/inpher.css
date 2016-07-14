@@ -490,5 +490,10 @@ html, body{
 #search-form {
     padding-top: 15px;
 }
+
+.sharedRow i:last-of-type {
+  margin-left: 5px;
+}
+
 /* search style over */
 

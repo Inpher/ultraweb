@@ -199,11 +199,8 @@ function inpherapi_list_res_to_row(a, i) {
   var delbtn = $('<button type="button" class="btn btn-danger btn-circle delbtn"><i class="fa fa-trash-o"></i></button>');
   delbtn.attr('data-path', a.path);
   return [
-    // outerHTML($("<a>").attr('href', "javascript:void(0)").attr("onclick", "window.href=" + INPHER_REST_URL 
-      // +"/download/?fileName="+ a.path).text(a.path)),
-      //'<a href="javascript:void(0)" onclick = "window.href='+ INPHER_REST_URL +"/download/INPHER_REST_URL?fileName="+ a.path + '>download</a>'),
     outerHTML(fsElementIconAndNameHtml(a.type, a.path, i)),
-    a.size,
+    a.type === "DOCUMENT" ? a.size : "",
     a.groups,
     outerHTML($("<div>").append(delbtn).append(createShareElementButton(a.path)))
   ];

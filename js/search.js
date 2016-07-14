@@ -26,7 +26,14 @@ $(function () {
 	var table = $('#searchResults').DataTable({
 		'searching':false,  
 		'bRetrieve':true,
-		'bPaginate':false
+		'bPaginate':false,
+		'order': [1, 'desc'],
+		'rowCallback': function( row, data, index ) {
+			if ( data[0].indexOf('data-path="/' + sessionStorage.getItem('username') + '/') < 0 ) {
+                $(row).addClass('sharedRow');
+                $('<i class="fa fa-users"></i>').insertAfter($(row).find("i"));
+			}
+		}
 	});
 });
 
