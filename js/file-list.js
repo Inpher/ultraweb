@@ -15,7 +15,7 @@ function update_currentPath(newPath) {
 	}
 	update_path_nav();
 	var table = $('#files').DataTable();
-  table.ajax.reload( null, false ); 
+  table.ajax.reload( null, true ); 
 	// update_table();
 }
 
@@ -132,7 +132,7 @@ function fileUploadForm(e){
 	e.preventDefault();
 	e.stopPropagation();
 	var obj = $('#file-list-page');
-	handleFileUpload($('#uploadFileModal input[type=file]')[0].files, '/' , obj);
+	handleFileUpload($('#uploadFileModal input[type=file]')[0].files, '/' , $('#uploadedFilesModal .modal-body'));
 	$('#uploadFileModal').modal('hide');
 }
 
@@ -322,6 +322,7 @@ function sendFileToServer(formData,status) {
 		processData: false,
 		cache: false,
 		data: formData,
+		async:true
 	};
 	options.xhr = function() {
 		var xhrobj = $.ajaxSettings.xhr();
@@ -344,8 +345,8 @@ function sendFileToServer(formData,status) {
 		status.setProgress(100);
 		$("#status1").append("File upload Done<br>");
 
-		// var table = $('#files').DataTable();
-		// table.ajax.reload(null, false);
+		var table = $('#files').DataTable();
+		table.ajax.reload(null, false);
 		// update_table(state.currentPath);
 	}
 }
@@ -377,6 +378,7 @@ function createStatusbar(obj)
 	};
 	this.setProgress = function(progress) {
 		var progressBarWidth =progress*this.progressBar.width()/ 100;
+		console.log(progressBarWidth);
 		this.progressBar.find('div').animate({ width: progressBarWidth }, 10).text(progress + "% ");
 		if(parseInt(progress) >= 100)
 		{
@@ -410,7 +412,7 @@ function handleMkdir(event) {
 		event.stopPropagation();
 		event.preventDefault();
 		var dirname = $("#mkdirname").val();
-		var table = $('#files').dataTable();
+		var table = $('#files').DataTable();
 		inpherapi_auth_post('/mkdir', { dir: state.currentPath + "/"  + dirname }, table.ajax.reload(null,false));
 		$('#mkdir-footer').toggleClass('hidden');
 	}
@@ -421,11 +423,14 @@ function traverseFileTree(item, path) {
 	if (item.isFile) {
 		// Get file
 		item.file(function(file) {
-			handleFileUpload([file], path, $('#file-list-page'));
+			setTimeout(function(){
+				handleFileUpload([file], path, $('#uploadedFilesModal .modal-body'));
+			}, 2000);
 		});
 	} else if (item.isDirectory) {
 		// Get folder contents and mkdir
-		var dirname = item.name
+
+		var dirname = item.name;
 		inpherapi_auth_post('/mkdir', { dir: state.currentPath + "/"  + path + dirname}, recurse(item,path));
 	}
 }

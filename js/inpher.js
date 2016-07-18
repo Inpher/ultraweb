@@ -2,7 +2,7 @@ var INPHER_REST_URL="https://api.inpher.io/ultraRest";
 
 /** Simple function to print an error message in the console */
 function print_error(error) {
-    console.log("An error occured:", error);
+    // console.log("An error occured:", error);
     $('#alertContainer').bs_alert(error.responseText);
 
 }
@@ -23,7 +23,7 @@ function dump(data) {
 function inpherapi_anon_ajax(path, callback, options) {
     var opt = (options===undefined)?{}:options;
     opt.url = INPHER_REST_URL + path;
-    console.log("Sending Ajax Request: ",opt);
+    // console.log("Sending Ajax Request: ",opt);
     $.ajax(opt).done(callback).fail(print_error);
 }
 
@@ -37,7 +37,7 @@ function inpherapi_auth_ajax(path, callback, options) {
     if (!options.headers.auth_token) return print_error('Not Logged In!');
     opt.url = INPHER_REST_URL + path;
     opt.cache = false;
-    console.log("Sending Ajax Request: ",opt);
+    // console.log("Sending Ajax Request: ",opt);
     $.ajax(opt).done(callback).fail(print_error);
 }
 
