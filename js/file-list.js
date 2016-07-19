@@ -132,7 +132,12 @@ function fileUploadForm(e){
 	e.preventDefault();
 	e.stopPropagation();
 	var obj = $('#file-list-page');
-	handleFileUpload($('#uploadFileModal input[type=file]')[0].files, '/' , $('#uploadedFilesModal .modal-body'));
+	var fileNumber = $('#uploadFileModal input[type=file]')[0].files.length;
+	if(fileNumber>0){
+		$('#totalDocs').text(parseInt($('#totalDocs').text()) + fileNumber);
+		$('#counters').removeClass('hidden');
+		handleFileUpload($('#uploadFileModal input[type=file]')[0].files, '/' , $('#uploadedFilesModal .modal-body'));
+	}
 	$('#uploadFileModal').modal('hide');
 }
 
@@ -319,15 +324,19 @@ function inpherapi_list(path, callback) {
 	inpherapi_auth_get("/listDirPaged", {dir: path, page: 0, numRes: 10}, callback);
 }
 
-
 function delItem(path) {
-	var table = $('#files').DataTable();
-	return inpherapi_auth_delete('/delete', {path: path, recursive: true}, table.ajax.reload(null,false));//update_table);
+  $('#files').find('tbody').addClass('loading');
+  $('#pathNav').addClass('loading');
+	return inpherapi_auth_delete('/delete', {path: path, recursive: true}, updateTable);
 }
 
+function updateTable() {
+	var table = $('#files').DataTable();
+	table.ajax.reload(null,false);
+	}
 // ------------------------------------------------
 // Upload shit below
-function sendFileToServer(formData,status) {
+function sendFileToServer(formData,status, update) {
 	var options = {
 		type: "POST",
 		contentType:false,
@@ -355,11 +364,14 @@ function sendFileToServer(formData,status) {
 	return inpherapi_auth_ajax('/upload', next1, options);
 	function next1(data) {
 		status.setProgress(100);
+		$('#uploadedDocs').text(parseInt($('#uploadedDocs').text()) + 1); 
+		update = (parseInt($('#uploadedDocs').text()) + 1) == parseInt($('#totalDocs').text());
 		$("#status1").append("File upload Done<br>");
-
-		var table = $('#files').DataTable();
-		table.ajax.reload(null, false);
-		// update_table(state.currentPath);
+		if(update){
+			var table = $('#files').DataTable();
+			table.ajax.reload(null, false);
+			$('#fountainG').hide();
+		}
 	}
 }
 
@@ -374,7 +386,7 @@ function createStatusbar(obj)
 	this.size = $("<div class='filesize'></div>").appendTo(this.statusbar);
 	this.progressBar = $("<div class='progressBar'><div></div></div>").appendTo(this.statusbar);
 	this.abort = $("<div class='abort'>Abort</div>").appendTo(this.statusbar);
-	obj.append(this.statusbar);
+	obj.prepend(this.statusbar);
 
 	this.setFileNameSize = function(name,size) {
 		var sizeStr="";
@@ -390,7 +402,6 @@ function createStatusbar(obj)
 	};
 	this.setProgress = function(progress) {
 		var progressBarWidth =progress*this.progressBar.width()/ 100;
-		console.log(progressBarWidth);
 		this.progressBar.find('div').animate({ width: progressBarWidth }, 10).text(progress + "% ");
 		if(parseInt(progress) >= 100)
 		{
@@ -406,14 +417,14 @@ function createStatusbar(obj)
 	};
 }
 
-function handleFileUpload(files, path, obj) {
+function handleFileUpload(files, path, obj, update) {
 	for (var i = 0; i < files.length; i++) {
 		var fd = new FormData();
 		fd.append('content', files[i]);
 		fd.append('name', state.currentPath + '/' + path + files[i].name);
 		var status = new createStatusbar(obj);
 		status.setFileNameSize(files[i].name,files[i].size);
-		sendFileToServer(fd,status);
+		sendFileToServer(fd,status, update);
 	}
  }
 
@@ -424,35 +435,42 @@ function handleMkdir(event) {
 		event.stopPropagation();
 		event.preventDefault();
 		var dirname = $("#mkdirname").val();
-		var table = $('#files').DataTable();
-		inpherapi_auth_post('/mkdir', { dir: state.currentPath + "/"  + dirname }, table.ajax.reload(null,false));
+		inpherapi_auth_post('/mkdir', { dir: state.currentPath + "/"  + dirname }, nextDir);
+		function nextDir(argument) {
+			var table = $('#files').DataTable();
+			$('#uploadedDocs').text(parseInt($('#uploadedDocs').text()) + 1); 
+			$('#totalDocs').text(parseInt($('#totalDocs').text()) + 1); 
+			table.ajax.reload(null,false)
+		}
 		$('#mkdir-footer').toggleClass('hidden');
 	}
 }
 
-function traverseFileTree(item, path) {
+function traverseFileTree(item, path, update) {
 	path = path || "";
 	if (item.isFile) {
 		// Get file
 		item.file(function(file) {
 			setTimeout(function(){
-				handleFileUpload([file], path, $('#uploadedFilesModal .modal-body'));
+				handleFileUpload([file], path, $('#uploadedFilesModal .modal-body'), update);
 			}, 2000);
 		});
 	} else if (item.isDirectory) {
 		// Get folder contents and mkdir
 
 		var dirname = item.name;
-		inpherapi_auth_post('/mkdir', { dir: state.currentPath + "/"  + path + dirname}, recurse(item,path));
+		inpherapi_auth_post('/mkdir', { dir: state.currentPath + "/"  + path + dirname}, recurse(item,path, update));
 	}
 }
 
-var recurse = function(item,path) {
+var recurse = function(item,path, update) {
+	$('#uploadedDocs').text(parseInt($('#uploadedDocs').text()) + 1); 
 	return function(data, textStatus, jqXHR) {
 		var dirReader = item.createReader();
 		dirReader.readEntries(function(entries) {
+			$('#totalDocs').text(parseInt($('#totalDocs').text()) + entries.length);
 			for (var i=0; i<entries.length; i++) {
-				traverseFileTree(entries[i], path + item.name + "/");
+				traverseFileTree(entries[i], path + item.name + "/", update);
 			}
 		});
 	};
@@ -470,7 +488,6 @@ $(function() {
 		e.preventDefault();
 		$('#dragandrophandler').removeClass('hidden');
 		$('#uploadFileModal').modal('hide');
-		console.log('dragenter');
 	});
 	obj.on('dragover', function (e) {
 		e.stopPropagation();
@@ -481,13 +498,14 @@ $(function() {
 		dragging = 0;
 		e.preventDefault();
 		$('#dragandrophandler').addClass('hidden');
-		console.log('drop');
 		var items = e.originalEvent.dataTransfer.items;
+		$('#totalDocs').text(parseInt($('#totalDocs').text()) + items.length);
 		for (var i=0; i<items.length; i++) {
 		// webkitGetAsEntry is where the magic happens
 			var item = items[i].webkitGetAsEntry();
 			if (item) {
-				traverseFileTree(item);
+				$('#counters').removeClass('hidden');
+				traverseFileTree(item, false);
 			}
 		}
 	});
@@ -498,7 +516,6 @@ $(function() {
 		if (dragging === 0) {
 			$('#dragandrophandler').addClass('hidden');
 		}
-		console.log('dragleave');
 	});
 	var doc = $(document);
 	doc.on('dragenter', function (e) {
