@@ -137,7 +137,16 @@ function fileUploadForm(e){
 }
 
 function init_table() {
-	$("#files").DataTable({
+	$("#files")
+	.on('preXhr.dt', function ( e, settings, data ) {
+        $(e.target).find('tbody').addClass('loading');
+        $('#pathNav').addClass('loading');
+    } )
+	.on( 'xhr.dt', function ( e, settings, data ) {
+        $(e.target).find('tbody').removeClass('loading');
+        $('#pathNav').removeClass('loading');
+    } )
+	.DataTable({
 		'searching':false,
 		dom: 'Bfrtip',
 		buttons: [
@@ -156,17 +165,20 @@ function init_table() {
 						}
 				}
 		],
-    	columns: [
-    		{ "data": "path" },
-        { "data": "size" },
-        { "data": "groups"},
-        { "data" : "buttons"}
-      ],
-      columnDefs: [{
-				"targets":  [2] ,
-				"data": "groups[, ]"
-			}],
+		columns: [
+			{ "data": "path" },
+		  { "data": "size" },
+		  { "data": "groups"},
+		  { "data" : "buttons"}
+		],
+		columnDefs: [{
+			"targets":  [2] ,
+			"data": "groups[, ]"
+		}],
 		serverSide: true,
+		language: {
+			processing: '<i class="fa fa-refresh fa-spin"></i>'
+		},
 		processing: true,
 		ajax: {
 			url: INPHER_REST_URL + "/listDirPaged",
@@ -204,7 +216,7 @@ function init_table() {
 setInterval( function () {
 	var table = $('#files').DataTable();
     table.ajax.reload( null, false ); // user paging is not reset on reload
-}, 30000 );
+}, 180000 );
 
 function pathCol(element, i) {
 		return outerHTML(fsElementIconAndNameHtml(element.type, element.path, i));
