@@ -537,7 +537,7 @@ html, body{
     padding-top: 15px;
 }
 
-.sharedRow i:last-of-type {
+#searchResults tr i:nth-child(2) {
   margin-left: 5px;
 }
 
