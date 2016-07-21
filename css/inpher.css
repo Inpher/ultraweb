@@ -251,13 +251,6 @@ html, body{
   vertical-align:top
 }
 
-#alertContainer{
-  position: fixed;
-  top: 0px;
-  right: 0px;
-  z-index: 1001;
-}
-
 .hidden {
   display: none;
 }
@@ -542,3 +535,20 @@ html, body{
 }
 
 /* search style over */
+
+/* alert container */
+
+#alertContainer{
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  z-index: 1051;
+}
+
+#alertContainer .alert-info {
+  background-color: #ecf3cb ;
+  border-color: #DDE9A2;
+  color: #5C7A50;
+}
+
+/* alert container over */

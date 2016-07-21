@@ -365,7 +365,7 @@ function sendFileToServer(formData,status, update) {
 	function next1(data) {
 		status.setProgress(100);
 		$('#uploadedDocs').text(parseInt($('#uploadedDocs').text()) + 1); 
-		update = (parseInt($('#uploadedDocs').text()) + 1) == parseInt($('#totalDocs').text());
+		update = (parseInt($('#uploadedDocs').text())) == parseInt($('#totalDocs').text());
 		$("#status1").append("File upload Done<br>");
 		if(update){
 			var table = $('#files').DataTable();
