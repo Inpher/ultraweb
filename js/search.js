@@ -64,7 +64,7 @@ $(function () {
 				for (var i = 0; i < json.results.length; i++) {
 					json.data.push({
 						'path': searchPathCol(json.results[i]),
-						'score': json.results[i].score
+						'score': Math.round(json.results[i].score * 1000) / 100
 					})
 				}
 				return JSON.stringify(json);;
