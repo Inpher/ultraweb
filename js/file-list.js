@@ -15,8 +15,7 @@ function update_currentPath(newPath) {
 	}
 	update_path_nav();
 	var table = $('#files').DataTable();
-  table.ajax.reload( null, true ); 
-	// update_table();
+  table.draw();
 }
 
 function update_path_nav() {
@@ -62,7 +61,7 @@ function onFileTableClick(event) {
 			return;
 		}
 		t = t.parent();
-		if(t.length == 0) { 
+		if(t.length == 0) {
 			return;
 		}
 	}
@@ -123,6 +122,7 @@ $(function () {
 	state.username = sessionStorage.getItem('username');
 	update_path_nav();
 	init_table();
+	$('#files').DataTable().draw();
 	$('#pathNav').click(onPathNavClick);
 	$('#files').click(onFileTableClick);
 	$('#uploadFileModal').submit(fileUploadForm);
@@ -152,7 +152,7 @@ function init_table() {
         $('#pathNav').removeClass('loading');
     } )
 	.DataTable({
-		'searching':false,
+		searching: false,
 		dom: 'Bfrtip',
 		buttons: [
 				{
@@ -170,6 +170,7 @@ function init_table() {
 						}
 				}
 		],
+		ordering: false,
 		columns: [
 			{ "data": "path" },
 		  { "data": "size" },
@@ -203,6 +204,15 @@ function init_table() {
 				json.recordsTotal = json.totalNumber;
 				json.recordsFiltered = json.totalNumber;
 				json.data = [];
+				json.list.sort(function (a, b) {
+				  if (a.path > b.path) {
+				    return 1;
+				  }
+				  if (a.path < b.path) {
+				    return -1;
+				  }
+				  return 0;
+				})
 				for (var i = 0; i < json.list.length; i++) {
 					json.data.push({
 						'path': pathCol(json.list[i], i),
@@ -220,7 +230,7 @@ function init_table() {
 
 setInterval( function () {
 	var table = $('#files').DataTable();
-    table.ajax.reload( null, false ); // user paging is not reset on reload
+    table.draw();
 }, 180000 );
 
 function pathCol(element, i) {
@@ -237,27 +247,6 @@ function showAddFolder() {
 	var mkdirName = $('#mkdirname');
 	mkdirName.val("");
 	mkdirName.focus();
-}
-
-function update_table() {
-	inpherapi_list(state.currentPath, function(data, status) {
-		if (status !== "success"){
-			$('#alertContainer').bs_alert(data);
-		}
-		currentListData = data.list;
-		var table = $('#files').dataTable();
-		table.fnClearTable();
-		if (data.list.length > 0) {
-			var tableData = [];
-			for (var i = 0; i < data.list.length; i++) {
-				tableData.push(inpherapi_list_res_to_row(data.list[i], i));
-			}
-			table.fnAddData(tableData, false);
-			table.fnSettings()._iRecordsTotal = data.totalNumber;
-			table.fnSettings()._iRecordsDisplay = data.totalNumber;
-			table.fnDraw();
-		}
-	});
 }
 
 /**
@@ -332,7 +321,7 @@ function delItem(path) {
 
 function updateTable() {
 	var table = $('#files').DataTable();
-	table.ajax.reload(null,false);
+	table.draw();
 	}
 // ------------------------------------------------
 // Upload shit below
@@ -364,12 +353,12 @@ function sendFileToServer(formData,status, update) {
 	return inpherapi_auth_ajax('/upload', next1, options);
 	function next1(data) {
 		status.setProgress(100);
-		$('#uploadedDocs').text(parseInt($('#uploadedDocs').text()) + 1); 
+		$('#uploadedDocs').text(parseInt($('#uploadedDocs').text()) + 1);
 		update = (parseInt($('#uploadedDocs').text())) == parseInt($('#totalDocs').text());
 		$("#status1").append("File upload Done<br>");
 		if(update){
 			var table = $('#files').DataTable();
-			table.ajax.reload(null, false);
+			table.draw();
 			$('#fountainG').hide();
 		}
 	}
@@ -438,9 +427,9 @@ function handleMkdir(event) {
 		inpherapi_auth_post('/mkdir', { dir: state.currentPath + "/"  + dirname }, nextDir);
 		function nextDir(argument) {
 			var table = $('#files').DataTable();
-			$('#uploadedDocs').text(parseInt($('#uploadedDocs').text()) + 1); 
-			$('#totalDocs').text(parseInt($('#totalDocs').text()) + 1); 
-			table.ajax.reload(null,false)
+			$('#uploadedDocs').text(parseInt($('#uploadedDocs').text()) + 1);
+			$('#totalDocs').text(parseInt($('#totalDocs').text()) + 1);
+			table.draw();
 		}
 		$('#mkdir-footer').toggleClass('hidden');
 	}
@@ -464,7 +453,7 @@ function traverseFileTree(item, path, update) {
 }
 
 var recurse = function(item,path, update) {
-	$('#uploadedDocs').text(parseInt($('#uploadedDocs').text()) + 1); 
+	$('#uploadedDocs').text(parseInt($('#uploadedDocs').text()) + 1);
 	return function(data, textStatus, jqXHR) {
 		var dirReader = item.createReader();
 		dirReader.readEntries(function(entries) {
