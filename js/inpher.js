@@ -145,6 +145,10 @@ function inpherapi_createSharingGroup(name, usersList, callback){
   inpherapi_auth_post_json("/createSharingGroup", {groupName:name, usernames:usersList}, callback, undefined);
 }
 
+function inpherapi_addToSharingGroup(groupName, username, callback){
+    inpherapi_auth_post("/addUser", {groupName: groupName, userName:username}, callback);
+}
+
 (function($){
     $.fn.extend({
         bs_alert: function(message, title){

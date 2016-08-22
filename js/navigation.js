@@ -90,10 +90,46 @@ function handleCreateSharingGroupSubmit(event) {
   }
 }
 
+function handleAddNewMemberToExistingGroupSubmit(event) {
+  event.stopPropagation();
+  event.preventDefault();
+  var groupName = $("#addToGroupname").val();
+  var username = $("#addToUsername").val();
+
+  if(groupName == '') return $('#alertContainer').bs_alert("Group name is empty, we'll do nothing");
+
+  if(username == '') return $('#alertContainer').bs_alert("Username is empty, we'll do nothing");
+  
+  return inpherapi_addToSharingGroup(groupName, username, next1);
+  function next1(data, status) {
+      if (status!="success") {
+        return $('#alertContainer').bs_alert("Failed to add to sharing group");
+      }
+      hideAddNewMemberToExistingGroup();
+      $('#alertContainer').bs_info("Member Added to Group Successfully!");
+  }
+}
+
 function handleSharingGroupCreateButtonClicked(event) {
     event.preventDefault();
     event.stopPropagation();
     showCreateSharingGroupModal();
+}
+
+function handleAddNewMemberToExistingGroup(event){
+  event.preventDefault();
+  event.stopPropagation();
+  showAddNewMemberToExistingGroup();
+}
+
+function showAddNewMemberToExistingGroup(){
+  $("#addToGroupname").val('');
+  $("#addToUsername").val('');
+  $('#addMemberModal').modal('show');
+}
+
+function hideAddNewMemberToExistingGroup(){
+  $('#addMemberModal').modal('hide');
 }
 
 function showCreateSharingGroupModal() {
@@ -117,5 +153,7 @@ $(function() {
   $("#navListUserDir").click(handleNavListUserDir);
   $("#createSharingGroupButton").click(handleSharingGroupCreateButtonClicked);
   $("#navListSearch").click(handleNavListSearchClick);
+  $('#addMemberForm').submit(handleAddNewMemberToExistingGroupSubmit);
+  $('#addMemberButton').click(handleAddNewMemberToExistingGroup);
 });
 
