@@ -37,6 +37,7 @@
     "bootstrap-social": "~4.8.0",
     "flot.tooltip": "~0.8.4",
     "bootstrap-validator": "~0.10.2",
-    "jquery-binary-transport": "https://github.com/henrya/js-jquery.git"
+    "jquery-binary-transport": "https://github.com/henrya/js-jquery.git",
+    "moment": "^2.14.1"
   }
 }
