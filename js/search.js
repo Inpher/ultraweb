@@ -81,7 +81,7 @@ function getQuery() {
 	}
 	textQuery = textQuery.concat(' (');
 	for(var date = moment(startDate); date.isSameOrBefore(endDate); date.add(1, 'days')){
-		textQuery = textQuery.concat(moment(date).format('L'));
+		textQuery = textQuery.concat(moment(date).format('YYYYMMDD'));
 		if(date.isBefore(endDate)){
 			textQuery = textQuery.concat(' OR ');
 		}
