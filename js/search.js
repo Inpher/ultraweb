@@ -1,6 +1,8 @@
 
 $(function () {
 	$('#search-form').submit(handleSearchFormSubmit);
+    $('#daterange').daterangepicker({
+	});	
 	$('#searchResults').click(function(e){
 	  	var t = $(event.target);
 	  	while (!t.is(this)) {
@@ -27,13 +29,7 @@ $(function () {
 		searching:false,  
 		bRetrieve:true,
 		dom: 'frtip',
-		// bPaginate':false,
-		// order': [1, 'desc'],
 		rowCallback: function( row, data, index ) {
-			// if ( data[0].indexOf('data-path="/' + sessionStorage.getItem('username') + '/') < 0 ) {
-	  //           $(row).addClass('sharedRow');
-	  //           $('<i class="fa fa-users"></i>').insertAfter($(row).find("i"));
-			// }
 		},
 		columns: [
 			{ "data": "path" },
@@ -52,7 +48,7 @@ $(function () {
 				var req = {
 					'page': data.start/data.length,
 					'numRes': data.length,
-					'query': $('#keywords').val()
+					'query': getQuery()
 				};
 				return req;
 			},
@@ -72,6 +68,27 @@ $(function () {
 		}
 	});
 });
+
+function getQuery() {
+	var startDate = $('#daterange').data('daterangepicker').startDate.startOf('day');
+	var endDate = $('#daterange').data('daterangepicker').endDate.startOf('day');
+	if(startDate.isSame(endDate))
+		return $('#keywords').val();
+	var textQuery = '';
+	if($('#keywords').val() != ''){
+		textQuery = '('.concat($('#keywords').val());
+		textQuery = textQuery.concat(') AND');
+	}
+	textQuery = textQuery.concat(' (');
+	for(var date = moment(startDate); date.isSameOrBefore(endDate); date.add(1, 'days')){
+		textQuery = textQuery.concat(moment(date).format('L'));
+		if(date.isBefore(endDate)){
+			textQuery = textQuery.concat(' OR ');
+		}
+	}
+	textQuery = textQuery.concat(')');
+	return textQuery;
+}
 
 function searchPathCol(element) {
 	var reps = $('<div>&emsp;</div>');
