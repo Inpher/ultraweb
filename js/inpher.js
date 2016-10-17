@@ -1,4 +1,4 @@
-var INPHER_REST_URL="https://demo-api.inpher.io/ultraRest";
+var INPHER_REST_URL="https://api.inpher.io/ultraRest";
 
 /** Simple function to print an error message in the console */
 function print_error(error) {

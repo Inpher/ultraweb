@@ -72,7 +72,7 @@ $(function () {
 function getQuery() {
 	var startDate = $('#daterange').data('daterangepicker').startDate.startOf('day');
 	var endDate = $('#daterange').data('daterangepicker').endDate.startOf('day');
-	if(startDate.isSame(endDate))
+	if(!$('#collapseAdvancedSearch').attr('aria-expanded'))
 		return $('#keywords').val();
 	var textQuery = '';
 	if($('#keywords').val() != ''){
