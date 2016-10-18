@@ -17,11 +17,11 @@ function updateListGroups(){
 
 function showPathInFileView(userOrGroupName) {
     showDiv('file-list-page');
-    var lastPath=state.lastCurrentPath[userOrGroupName]; 
+    var lastPath=state.lastCurrentPath[userOrGroupName];
     if (lastPath!==undefined){
       return update_currentPath(lastPath);
     }
-    update_currentPath('/' + userOrGroupName); 
+    update_currentPath('/' + userOrGroupName);
 }
 
 function handleListGroupsClick(event) {
@@ -59,6 +59,22 @@ function handleNavListSearchClick(event) {
     activateNavTab(event);
 }
 
+function handleDeleteSharingGroupSubmit(event) {
+  event.stopPropagation();
+  even.preventDefault();
+  var groupName = $("#deleteSharingGroupName").val();
+  groupName = groupName.trim();
+  if (groupName == '') return $('#alertContainer').bs_alert("Group name is empty, we'll  do nothing");
+  return inpherapi_deleteSharingGroup(groupName, next1);
+  function next1(data, status) {
+      if (status!="success")
+	  return $('#alertContainer').bs_alert("Failed to delete sharing group");
+      hideDeleteSharingGroupModal();
+      $('#alertContainer').bs_info("Sharing Group Deleted!");
+      return updateListGroups();
+  }
+}
+
 function handleCreateSharingGroupSubmit(event) {
   event.stopPropagation();
   event.preventDefault();
@@ -82,7 +98,7 @@ function handleCreateSharingGroupSubmit(event) {
   if(finalMembers.length == 0) return $('#alertContainer').bs_alert("members are empty, we'll do nothing");
   return inpherapi_createSharingGroup(groupName, finalMembers, next1);
   function next1(data, status) {
-      if (status!="success") 
+      if (status!="success")
 	  return $('#alertContainer').bs_alert("Failed to create sharing group");
       hideCreateSharingGroupModal();
       $('#alertContainer').bs_info("Sharing Group Created!");
@@ -99,7 +115,7 @@ function handleAddNewMemberToExistingGroupSubmit(event) {
   if(groupName == '') return $('#alertContainer').bs_alert("Group name is empty, we'll do nothing");
 
   if(username == '') return $('#alertContainer').bs_alert("Username is empty, we'll do nothing");
-  
+
   return inpherapi_addToSharingGroup(groupName, username, next1);
   function next1(data, status) {
       if (status!="success") {
@@ -114,6 +130,12 @@ function handleSharingGroupCreateButtonClicked(event) {
     event.preventDefault();
     event.stopPropagation();
     showCreateSharingGroupModal();
+}
+
+function handleSharingGroupCreateButtonClicked(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    showDeleteSharingGroupModal();
 }
 
 function handleAddNewMemberToExistingGroup(event){
@@ -139,8 +161,17 @@ function showCreateSharingGroupModal() {
    $('#createSharingGroupModal').modal('show');
 }
 
+function showDeleteSharingGroupModal() {
+   $("#deleteSharingGroupName").val('');
+   $('#deleteSharingGroupModal').modal('show');
+}
+
 function hideCreateSharingGroupModal() {
    $('#createSharingGroupModal').modal('hide');
+}
+
+function hideDeleteSharingGroupModal() {
+   $('#deleteSharingGroupModal').modal('hide');
 }
 
 $(function() {
@@ -149,11 +180,12 @@ $(function() {
   updateListGroups();
 
   $("#createSharingGroupForm").submit(handleCreateSharingGroupSubmit);
+  $("#deleteSharingGroupForm").submit(handleDeleteSharingGroupSubmit);
   $("#sharingGroupList").click(handleListGroupsClick);
   $("#navListUserDir").click(handleNavListUserDir);
   $("#createSharingGroupButton").click(handleSharingGroupCreateButtonClicked);
+  $("#deleteSharingGroupButton").click(handleSharingGroupDeleteButtonClicked);
   $("#navListSearch").click(handleNavListSearchClick);
   $('#addMemberForm').submit(handleAddNewMemberToExistingGroupSubmit);
   $('#addMemberButton').click(handleAddNewMemberToExistingGroup);
 });
-
