@@ -61,7 +61,7 @@ function handleNavListSearchClick(event) {
 
 function handleDeleteSharingGroupSubmit(event) {
   event.stopPropagation();
-  even.preventDefault();
+  event.preventDefault();
   var groupName = $("#deleteSharingGroupName").val();
   groupName = groupName.trim();
   if (groupName == '') return $('#alertContainer').bs_alert("Group name is empty, we'll  do nothing");
@@ -132,7 +132,7 @@ function handleSharingGroupCreateButtonClicked(event) {
     showCreateSharingGroupModal();
 }
 
-function handleSharingGroupCreateButtonClicked(event) {
+function handleSharingGroupDeleteButtonClicked(event) {
     event.preventDefault();
     event.stopPropagation();
     showDeleteSharingGroupModal();

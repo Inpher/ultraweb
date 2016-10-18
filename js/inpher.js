@@ -146,7 +146,7 @@ function inpherapi_createSharingGroup(name, usersList, callback){
 }
 
 function inpherapi_deleteSharingGroup(groupName, callback){
-  inpherapi_auth_post_json("/deleteSharingGroup", {groupName: groupName}, callback, undefined);
+  inpherapi_auth_post("/deleteSharingGroup", {groupName: groupName}, callback, undefined);
 }
 
 function inpherapi_addToSharingGroup(groupName, username, callback){
