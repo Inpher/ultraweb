@@ -110,7 +110,9 @@ function handleAddNewMemberToExistingGroupSubmit(event) {
   event.stopPropagation();
   event.preventDefault();
   var groupName = $("#addToGroupname").val();
+  groupName = groupName.trim();
   var username = $("#addToUsername").val();
+  username = username.trim();
 
   if(groupName == '') return $('#alertContainer').bs_alert("Group name is empty, we'll do nothing");
 
